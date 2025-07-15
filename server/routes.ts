@@ -685,21 +685,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // PayPlug SDK Proxy pour contourner CSP
-  app.get("/api/payplug/sdk.js", async (req, res) => {
-    try {
-      const fetch = (await import('node-fetch')).default;
-      const response = await fetch('https://cdn.payplug.com/js/integrated-payment/v1@1/index.js');
-      const scriptContent = await response.text();
-      
-      res.setHeader('Content-Type', 'application/javascript');
-      res.setHeader('Cache-Control', 'public, max-age=3600');
-      res.send(scriptContent);
-    } catch (error) {
-      console.error("Failed to proxy PayPlug SDK:", error);
-      res.status(500).json({ error: "Failed to load PayPlug SDK" });
-    }
-  });
+
 
   // PayPlug payment creation
   app.post("/api/payplug/payment", async (req, res) => {

@@ -5,6 +5,15 @@ A comprehensive waste management and sustainability platform that leverages inte
 
 ## Recent Changes (July 15, 2025)
 
+### ✅ PAYPLUG INTÉGRATION PRODUCTION VPS - SOLUTION PROPRE ET DURABLE (July 15, 2025)
+✓ REMPLACÉ: Toutes les références Stripe par PayPlug à 100%
+✓ IMPLÉMENTÉ: Chargement direct du SDK PayPlug depuis CDN dans index.html
+✓ SUPPRIMÉ: Tous les contournements et proxys temporaires qui causaient des erreurs
+✓ CRÉÉ: Guide complet PAYPLUG-VPS-SOLUTION.md avec configuration nginx production
+✓ CONFIGURÉ: Headers CSP appropriés pour permettre cdn.payplug.com et api.payplug.com
+✓ TESTÉ: SDK PayPlug se charge correctement avec la clé test sk_test_2wDsePkdatiFXUsRfeu6m1
+✓ VALIDÉ: Solution production-ready sans hacks, prête pour déploiement VPS
+
 ### ✅ MIGRATION REPLIT AGENT VERS VPS - ERREURS APIQUEST CORRIGÉES (July 15, 2025)
 ✓ CORRIGÉ: Erreur "'/api/auth/login' is not a valid HTTP method" dans queryClient
 ✓ FIXÉ: Ordre des paramètres apiRequest(url, method, data) dans tous les fichiers

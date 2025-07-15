@@ -17,16 +17,23 @@ export const getPayPlugInstance = () => {
 };
 
 // Export PayPlug promise for compatibility with Stripe-like pattern
-export const payplugPromise = new Promise(async (resolve) => {
+export const payplugPromise = new Promise((resolve) => {
   if (typeof window !== 'undefined') {
-    try {
-      // Charger le script PayPlug avec contournement CSP
-      await loadPayPlugScript();
-      // Une fois chargé, créer l'instance
-      resolve(getPayPlugInstance());
-    } catch (error) {
-      console.error('Failed to load PayPlug:', error);
-      resolve(null);
+    // Attendre que le DOM et PayPlug soient chargés
+    const checkPayPlug = () => {
+      if (window.Payplug) {
+        console.log('✅ PayPlug SDK ready');
+        resolve(getPayPlugInstance());
+      } else {
+        // Réessayer après un court délai
+        setTimeout(checkPayPlug, 100);
+      }
+    };
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkPayPlug);
+    } else {
+      checkPayPlug();
     }
   } else {
     resolve(null);

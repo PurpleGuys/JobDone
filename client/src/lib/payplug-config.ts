@@ -21,43 +21,34 @@ if (PAYPLUG_SECRET_KEY) {
   console.warn('⚠️ PayPlug secret key not configured');
 }
 
-// Fonction pour charger PayPlug SDK de manière asynchrone avec contournement CSP
+// Fonction pour charger PayPlug SDK
 export const loadPayPlugScript = (): Promise<void> => {
+  // Le SDK est déjà chargé via payplug-loader.js dans index.html
   return new Promise((resolve, reject) => {
-    // Vérifier si le script est déjà chargé
-    if ((window as any).Payplug) {
+    // Utiliser la fonction globale loadPayPlugSDK si disponible
+    if ((window as any).loadPayPlugSDK) {
+      (window as any).loadPayPlugSDK()
+        .then(() => resolve())
+        .catch((error: Error) => reject(error));
+    } else if ((window as any).Payplug) {
+      // Déjà chargé
       console.log("✅ PayPlug SDK already loaded");
       resolve();
-      return;
-    }
-
-    // Charger le script via notre proxy pour contourner CSP
-    const script = document.createElement('script');
-    script.src = '/api/payplug/sdk.js';
-    script.async = true;
-    
-    script.onload = () => {
-      // Attendre que PayPlug soit disponible
+    } else {
+      // Fallback au cas où
       let checkCount = 0;
       const checkInterval = setInterval(() => {
         if ((window as any).Payplug) {
           clearInterval(checkInterval);
-          console.log("✅ PayPlug SDK loaded successfully via proxy");
+          console.log("✅ PayPlug SDK detected");
           resolve();
-        } else if (checkCount++ > 20) {
+        } else if (checkCount++ > 50) {
           clearInterval(checkInterval);
-          console.error("❌ PayPlug SDK failed to initialize after proxy load");
-          reject(new Error('PayPlug SDK failed to initialize'));
+          console.error("❌ PayPlug SDK not found");
+          reject(new Error('PayPlug SDK not found'));
         }
       }, 100);
-    };
-    
-    script.onerror = () => {
-      console.error("❌ Failed to load PayPlug SDK via proxy");
-      reject(new Error('Failed to load PayPlug SDK'));
-    };
-    
-    document.head.appendChild(script);
+    }
   });
 };
 

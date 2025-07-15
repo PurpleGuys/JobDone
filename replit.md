@@ -5,6 +5,16 @@ A comprehensive waste management and sustainability platform that leverages inte
 
 ## Recent Changes (July 15, 2025)
 
+### ✅ VPS DEPLOYMENT CONFIGURATION FIX - ERREURS TSCONFIG CORRIGÉES (July 15, 2025)
+✓ CRÉÉ: tsconfig.node.json manquant pour compilation TypeScript VPS
+✓ AJOUTÉ: vite.config.production.ts compatible Node.js v18 avec __dirname fix
+✓ CORRIGÉ: Erreur "ENOENT: no such file or directory, open 'tsconfig.node.json'"
+✓ IMPLÉMENTÉ: Script vps-deploy.sh avec configuration production optimisée
+✓ RÉSOLU: Problème import.meta.dirname non compatible Node.js v18
+✓ CONFIGURÉ: Alias paths corrects pour @/, @shared, @assets dans production
+✓ VALIDÉ: Build Vite compatible VPS avec rollupOptions manualChunks
+✓ TESTÉ: Script de déploiement avec fallback HTML et gestion d'erreurs
+
 ### ✅ MIGRATION REPLIT AGENT VERS VPS - ERREURS APIQUEST CORRIGÉES (July 15, 2025)
 ✓ CORRIGÉ: Erreur "'/api/auth/login' is not a valid HTTP method" dans queryClient
 ✓ FIXÉ: Ordre des paramètres apiRequest(url, method, data) dans tous les fichiers

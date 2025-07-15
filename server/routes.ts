@@ -248,11 +248,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }));
   } else {
-    // Development: disable CSP to allow Vite and Replit scripts
-    app.use(helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-    }));
+    // Development: disable ALL security headers to allow Vite and Replit scripts
+    // Pas de Helmet du tout en développement
   }
   
   // Configure trust proxy and rate limiting for production

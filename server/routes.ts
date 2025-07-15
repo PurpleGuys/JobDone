@@ -5,7 +5,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import path from "path";
-import Stripe from "stripe";
+// Stripe supprimé - utilisation de PayPlug
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { body, validationResult } from "express-validator";
@@ -80,16 +80,8 @@ function generateFidPdfContent(fid: any) {
   };
 }
 
-// Initialize Stripe only if key is provided
-let stripe: Stripe | null = null;
-if (process.env.STRIPE_SECRET_KEY) {
-  stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2024-12-18.acacia" as any,
-  });
-  console.log("✅ Stripe initialized successfully");
-} else {
-  console.warn("⚠️ STRIPE_SECRET_KEY not configured. Payment features will be disabled.");
-}
+// PayPlug configuration intégrée dans lib/payplug-config.js
+// Plus d'initialisation Stripe nécessaire
 
 // Rate limiting for production only
 const authLimiter = process.env.NODE_ENV === 'production' ? rateLimit({

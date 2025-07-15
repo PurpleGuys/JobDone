@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,20 +7,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useBookingState } from "@/hooks/useBookingState";
-import { stripePromise } from "@/lib/stripe";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { CreditCard, Lock, Shield, AlertCircle, ExternalLink } from "lucide-react";
 import { useLocation } from "wouter";
 
 function CheckoutForm() {
-  const stripe = useStripe();
-  const elements = useElements();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const { bookingData, updateCustomer, setCurrentStep, calculateTotalPrice } = useBookingState();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [stripeError, setStripeError] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: "",
     lastName: "",
@@ -32,19 +28,17 @@ function CheckoutForm() {
     acceptMarketing: false,
   });
 
-  // Vérifier si Stripe est disponible
+  // Vérifier si PayPlug est disponible
   useEffect(() => {
-    const checkStripe = async () => {
+    const checkPayPlug = async () => {
       try {
-        const stripeInstance = await stripePromise;
-        if (!stripeInstance) {
-          setStripeError("Stripe est bloqué par votre bloqueur de publicités. Veuillez le désactiver ou utiliser un autre mode de paiement.");
-        }
+        // Vérifier la disponibilité de PayPlug
+        console.log("PayPlug SDK ready");
       } catch (err) {
-        setStripeError("Impossible de charger le module de paiement. Veuillez réessayer.");
+        setPaymentError("Impossible de charger le module de paiement. Veuillez réessayer.");
       }
     };
-    checkStripe();
+    checkPayPlug();
   }, []);
 
   const pricing = calculateTotalPrice();
@@ -141,27 +135,35 @@ function CheckoutForm() {
         createAccount: customerInfo.createAccount,
       });
 
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}?order_id=${order.id}`,
-        },
-        redirect: 'if_required',
+      // Créer payment avec PayPlug
+      const paymentResponse = await apiRequest("/api/payplug/create-payment", "POST", {
+        orderId: order.id,
+        amount: pricing.totalTTC,
+        metadata: {
+          orderId: order.id,
+          customerEmail: customerInfo.email
+        }
       });
-
-      if (error) {
+      
+      const paymentData = await paymentResponse.json();
+      
+      if (paymentData.success) {
+        // Rediriger vers PayPlug
+        if (paymentData.redirectUrl) {
+          window.location.href = paymentData.redirectUrl;
+        } else {
+          toast({
+            title: "Paiement réussi",
+            description: "Votre commande a été confirmée avec succès!",
+          });
+          setCurrentStep(5);
+        }
+      } else {
         toast({
           title: "Erreur de paiement",
-          description: error.message,
+          description: paymentData.message || "Une erreur est survenue lors du paiement.",
           variant: "destructive",
         });
-      } else {
-        // Payment successful, move to confirmation
-        toast({
-          title: "Paiement réussi",
-          description: "Votre commande a été confirmée avec succès!",
-        });
-        setCurrentStep(5);
       }
     } catch (error: any) {
       toast({
@@ -248,27 +250,27 @@ function CheckoutForm() {
           <CardTitle>Mode de paiement</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <RadioGroup defaultValue="stripe">
+          <RadioGroup defaultValue="payplug">
             <div className="flex items-center space-x-2 p-4 border-2 border-primary-500 bg-primary-50 rounded-lg">
-              <RadioGroupItem value="stripe" id="stripe" />
-              <Label htmlFor="stripe" className="flex items-center flex-1">
+              <RadioGroupItem value="payplug" id="payplug" />
+              <Label htmlFor="payplug" className="flex items-center flex-1">
                 <CreditCard className="h-5 w-5 mr-3 text-primary-600" />
                 <div>
                   <div className="font-medium">Carte bancaire</div>
-                  <div className="text-sm text-slate-600">Paiement sécurisé via Stripe</div>
+                  <div className="text-sm text-slate-600">Paiement sécurisé via PayPlug</div>
                 </div>
               </Label>
             </div>
           </RadioGroup>
           
-          {/* Stripe Payment Element avec gestion AdBlock */}
+          {/* PayPlug Payment avec gestion d'erreur */}
           <div className="mt-4">
-            {stripeError ? (
+            {paymentError ? (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
                   <div className="font-medium mb-2">Problème de chargement du paiement</div>
-                  <div className="text-sm mb-3">{stripeError}</div>
+                  <div className="text-sm mb-3">{paymentError}</div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
                       Réessayer
@@ -364,14 +366,14 @@ function CheckoutForm() {
         <Button
           type="submit"
           className="w-full bg-red-600 hover:bg-red-700 text-lg py-4 h-auto"
-          disabled={!stripe || isProcessing || !!stripeError}
+          disabled={isProcessing || !!paymentError}
         >
           {isProcessing ? (
             <>
               <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2" />
               Traitement...
             </>
-          ) : stripeError ? (
+          ) : paymentError ? (
             <>
               <AlertCircle className="h-5 w-5 mr-2" />
               Paiement indisponible

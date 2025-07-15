@@ -12,18 +12,40 @@ Ajouter ces headers dans votre configuration nginx du VPS:
 ```nginx
 # Dans /etc/nginx/sites-available/bennespro
 server {
+    listen 443 ssl http2;
+    server_name purpleguy.world;
+    
     # ... votre config SSL existante ...
     
-    # Headers CSP pour PayPlug
-    add_header Content-Security-Policy "
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com;
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-        img-src 'self' data: https: blob:;
-        connect-src 'self' https://api.payplug.com https://secure.payplug.com https://cdn.payplug.com https://maps.googleapis.com ws: wss:;
-        font-src 'self' https://fonts.gstatic.com;
-        frame-src 'self' https://secure.payplug.com https://api.payplug.com;
-    " always;
+    root /var/www/bennespro/dist/public;
+    index index.html;
+    
+    # Headers CSP pour PayPlug - IMPORTANT: tout sur une ligne
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.payplug.com https://secure.payplug.com https://cdn.payplug.com https://maps.googleapis.com ws: wss:; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://secure.payplug.com https://api.payplug.com;" always;
+    
+    # Autres headers de sécurité
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    
+    # Servir les fichiers statiques
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    # Proxy API vers backend Node.js
+    location /api {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
 }
 ```
 

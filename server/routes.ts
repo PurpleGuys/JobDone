@@ -196,6 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             "'self'", 
             "'unsafe-inline'", 
             "'unsafe-eval'", 
+            "https://cdn.payplug.com",
             "https://secure.payplug.com",
             "https://api.payplug.com",
             "https://replit.com",
@@ -220,6 +221,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
           connectSrc: [
             "'self'", 
+            "https://cdn.payplug.com",
             "https://api.payplug.com",
             "https://secure.payplug.com",
             "https://maps.googleapis.com",

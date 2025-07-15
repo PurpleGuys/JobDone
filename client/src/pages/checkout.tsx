@@ -1,4 +1,4 @@
-// PayPlug integrated payments
+// PayPlug integrated payments remplace Stripe
 import { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -339,11 +339,11 @@ export default function Checkout() {
     const details = sessionStorage.getItem('bookingDetails');
     if (!details) {
       toast({
-        title: "Aucune réservation en cours",
-        description: "Commencez par sélectionner votre service.",
+        title: "Erreur",
+        description: "Aucune réservation en cours. Retour à l'accueil.",
         variant: "destructive",
       });
-      setTimeout(() => setLocation('/booking'), 2000);
+      setLocation('/');
       return;
     }
 

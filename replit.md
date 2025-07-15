@@ -5,28 +5,6 @@ A comprehensive waste management and sustainability platform that leverages inte
 
 ## Recent Changes (July 15, 2025)
 
-### ✅ MIGRATION STRIPE → PAYPLUG 100% COMPLÈTE (July 15, 2025 - 1:00 PM)
-✓ RÉSOLU: Erreur fatale "Could not resolve entry module @stripe/stripe-js"
-✓ SUPPRIMÉ: Tous les packages Stripe (stripe, @stripe/stripe-js, @stripe/react-stripe-js)
-✓ NETTOYÉ: Toutes les références Stripe dans le code source et commentaires
-✓ CRÉÉ: Scripts VPS-IMMEDIATE-FIX.sh et FORCE-CLEAN-BUILD.sh pour build propre
-✓ CORRIGÉ: CSP headers désactivés en développement pour Replit
-✓ CONFIGURÉ: nginx-vps-payplug.conf avec tous les domaines PayPlug autorisés
-✓ TESTÉ: PayPlug SDK chargé avec succès, clé test sk_test_2wDsePkdatiFXUsRfeu6m1
-✓ VALIDÉ: Application 100% PayPlug, build VPS sans erreurs Stripe
-✓ CORRIGÉ: Erreurs d'alias VPS ("@/components/ui/toaster" non trouvé)
-✓ CRÉÉ: Scripts VPS-BUILD-FIX-FINAL.sh et VPS-QUICK-FIX.sh pour correction
-✓ RÉSOLU: Problèmes import.meta.dirname sur VPS Node.js
-
-### ✅ PAYPLUG INTÉGRATION PRODUCTION VPS - SOLUTION PROPRE ET DURABLE (July 15, 2025)
-✓ REMPLACÉ: Toutes les références Stripe par PayPlug à 100%
-✓ IMPLÉMENTÉ: Chargement direct du SDK PayPlug depuis CDN dans index.html
-✓ SUPPRIMÉ: Tous les contournements et proxys temporaires qui causaient des erreurs
-✓ CRÉÉ: Guide complet PAYPLUG-VPS-SOLUTION.md avec configuration nginx production
-✓ CONFIGURÉ: Headers CSP appropriés pour permettre cdn.payplug.com et api.payplug.com
-✓ TESTÉ: SDK PayPlug se charge correctement avec la clé test sk_test_2wDsePkdatiFXUsRfeu6m1
-✓ VALIDÉ: Solution production-ready sans hacks, prête pour déploiement VPS
-
 ### ✅ MIGRATION REPLIT AGENT VERS VPS - ERREURS APIQUEST CORRIGÉES (July 15, 2025)
 ✓ CORRIGÉ: Erreur "'/api/auth/login' is not a valid HTTP method" dans queryClient
 ✓ FIXÉ: Ordre des paramètres apiRequest(url, method, data) dans tous les fichiers

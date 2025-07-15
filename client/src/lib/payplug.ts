@@ -1,4 +1,4 @@
-import { PAYPLUG_SECRET_KEY, PAYPLUG_MODE, loadPayPlugScript } from './payplug-config';
+import { PAYPLUG_SECRET_KEY, PAYPLUG_MODE } from './payplug-config';
 
 // Type declarations for PayPlug
 declare global {
@@ -16,25 +16,21 @@ export const getPayPlugInstance = () => {
   return null;
 };
 
-// Export PayPlug promise for compatibility with payment pattern
+// Export PayPlug promise for compatibility with Stripe-like pattern
 export const payplugPromise = new Promise((resolve) => {
   if (typeof window !== 'undefined') {
-    // Attendre que le DOM et PayPlug soient chargés
-    const checkPayPlug = () => {
+    const checkPayPlug = setInterval(() => {
       if (window.Payplug) {
-        console.log('✅ PayPlug SDK ready');
+        clearInterval(checkPayPlug);
         resolve(getPayPlugInstance());
-      } else {
-        // Réessayer après un court délai
-        setTimeout(checkPayPlug, 100);
       }
-    };
+    }, 100);
     
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', checkPayPlug);
-    } else {
-      checkPayPlug();
-    }
+    // Timeout after 10 seconds
+    setTimeout(() => {
+      clearInterval(checkPayPlug);
+      resolve(null);
+    }, 10000);
   } else {
     resolve(null);
   }

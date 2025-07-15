@@ -12,6 +12,12 @@ if (typeof window !== 'undefined') {
   window.process = window.process || {};
   window.process.env = window.process.env || {};
   window.process.env.VITE_PAYPLUG_SECRET_KEY = PAYPLUG_SECRET_KEY;
+  
+  // Load PayPlug script
+  const script = document.createElement('script');
+  script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
+  script.async = true;
+  document.head.appendChild(script);
 }
 
 if (PAYPLUG_SECRET_KEY) {
@@ -20,36 +26,5 @@ if (PAYPLUG_SECRET_KEY) {
 } else {
   console.warn('⚠️ PayPlug secret key not configured');
 }
-
-// Fonction pour charger PayPlug SDK
-export const loadPayPlugScript = (): Promise<void> => {
-  // Le SDK est déjà chargé via payplug-loader.js dans index.html
-  return new Promise((resolve, reject) => {
-    // Utiliser la fonction globale loadPayPlugSDK si disponible
-    if ((window as any).loadPayPlugSDK) {
-      (window as any).loadPayPlugSDK()
-        .then(() => resolve())
-        .catch((error: Error) => reject(error));
-    } else if ((window as any).Payplug) {
-      // Déjà chargé
-      console.log("✅ PayPlug SDK already loaded");
-      resolve();
-    } else {
-      // Fallback au cas où
-      let checkCount = 0;
-      const checkInterval = setInterval(() => {
-        if ((window as any).Payplug) {
-          clearInterval(checkInterval);
-          console.log("✅ PayPlug SDK detected");
-          resolve();
-        } else if (checkCount++ > 50) {
-          clearInterval(checkInterval);
-          console.error("❌ PayPlug SDK not found");
-          reject(new Error('PayPlug SDK not found'));
-        }
-      }, 100);
-    }
-  });
-};
 
 export { PAYPLUG_SECRET_KEY, PAYPLUG_MODE };

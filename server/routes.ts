@@ -5,7 +5,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import path from "path";
-// PayPlug payment processing
+// PayPlug payment processing (replaced Stripe)
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { body, validationResult } from "express-validator";
@@ -16,7 +16,6 @@ import { emailService } from "./emailService";
 import { sendGridService } from "./sendgridService";
 import { NotificationService } from "./notificationService";
 import { PayPlugService } from "./payplugService";
-import { servePayPlugSDK } from "./payplug-sdk-proxy";
 import { insertOrderSchema, insertUserSchema, loginSchema, updateUserSchema, changePasswordSchema, insertRentalPricingSchema, updateRentalPricingSchema, insertServiceSchema, insertTransportPricingSchema, updateTransportPricingSchema, insertWasteTypeSchema, insertTreatmentPricingSchema, updateTreatmentPricingSchema, insertBankDepositSchema, updateBankDepositSchema, insertFidSchema, updateFidSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
@@ -196,9 +195,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             "'self'", 
             "'unsafe-inline'", 
             "'unsafe-eval'", 
-            "https://cdn.payplug.com",
             "https://secure.payplug.com",
             "https://api.payplug.com",
+            "https://replit.com",
+            "https://*.replit.com",
             "https://maps.googleapis.com",
             "https://maps.gstatic.com"
           ],
@@ -219,7 +219,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
           connectSrc: [
             "'self'", 
-            "https://cdn.payplug.com",
             "https://api.payplug.com",
             "https://secure.payplug.com",
             "https://maps.googleapis.com",
@@ -248,8 +247,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }));
   } else {
-    // Development: disable ALL security headers to allow Vite and Replit scripts
-    // Pas de Helmet du tout en développement
+    // Development: disable CSP to allow Vite and Replit scripts
+    app.use(helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    }));
   }
   
   // Configure trust proxy and rate limiting for production
@@ -682,9 +684,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Error fetching order: " + error.message });
     }
   });
-
-  // Servir le SDK PayPlug localement pour éviter les problèmes CSP
-  app.get("/assets/payplug-sdk.js", servePayPlugSDK);
 
   // PayPlug payment creation
   app.post("/api/payplug/payment", async (req, res) => {

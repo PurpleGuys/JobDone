@@ -1,0 +1,43 @@
+
+6 vulnerabilities (5 moderate, 1 high)
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+→ Build alternatif...
+
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+
+vite v5.4.19 building for production...
+✓ 3089 modules transformed.
+x Build failed in 14.70s
+error during build:
+Could not resolve entry module "".
+    at getRollupError (file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/parseAst.js:401:41)
+    at error (file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.loadEntryModule (file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/node-entry.js:21451:20)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+Build normal échoué, tentative alternative...
+vite v5.4.19 building for production...
+✓ 5 modules transformed.
+x Build failed in 610ms
+error during build:
+[vite]: Rollup failed to resolve import "@/components/ui/toaster" from "/home/ubuntu/JobDone/client/src/App.tsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteWarn (file:///home/ubuntu/JobDone/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65839:17)
+    at onRollupWarning (file:///home/ubuntu/JobDone/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65871:5)
+    at onwarn (file:///home/ubuntu/JobDone/node_modules/vite/dist/node/chunks/dep-C6uTJdX2.js:65534:7)
+    at file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/node-entry.js:20820:13
+    at Object.logger [as onLog] (file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/node-entry.js:22686:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/node-entry.js:21432:26)
+    at file:///home/ubuntu/JobDone/node_modules/rollup/dist/es/shared/node-entry.js:21390:26
+cp: cannot stat 'client/dist/*': No such file or directory
+✅ Build alternatif terminé

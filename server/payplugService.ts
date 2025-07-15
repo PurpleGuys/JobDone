@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+// Use dynamic import for node-fetch to avoid ESM issues in production
+const fetch = (...args: any[]) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 import { ENV } from '../ensure-env-loaded';
 
 export class PayPlugService {

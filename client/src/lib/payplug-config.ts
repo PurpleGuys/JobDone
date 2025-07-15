@@ -31,50 +31,33 @@ export const loadPayPlugScript = (): Promise<void> => {
       return;
     }
 
-    // Méthode alternative pour charger le script en contournant CSP
-    // Utilise fetch pour récupérer le script puis l'évalue
-    fetch('https://cdn.payplug.com/js/integrated-payment/v1@1/index.js')
-      .then(response => response.text())
-      .then(scriptText => {
-        // Créer un nouveau script avec le contenu récupéré
-        const scriptElement = document.createElement('script');
-        scriptElement.textContent = scriptText;
-        scriptElement.setAttribute('data-payplug', 'true');
-        document.head.appendChild(scriptElement);
-        
-        // Attendre que PayPlug soit disponible
-        let checkCount = 0;
-        const checkInterval = setInterval(() => {
-          if ((window as any).Payplug) {
-            clearInterval(checkInterval);
-            console.log("✅ PayPlug SDK loaded successfully via fetch");
-            resolve();
-          } else if (checkCount++ > 20) {
-            clearInterval(checkInterval);
-            console.error("❌ PayPlug SDK failed to initialize after fetch");
-            reject(new Error('PayPlug SDK failed to initialize'));
-          }
-        }, 100);
-      })
-      .catch(error => {
-        console.error("❌ Failed to fetch PayPlug SDK:", error);
-        // Fallback: essayer la méthode standard au cas où
-        const script = document.createElement('script');
-        script.src = 'https://cdn.payplug.com/js/integrated-payment/v1@1/index.js';
-        script.async = true;
-        
-        script.onload = () => {
-          console.log("✅ PayPlug SDK loaded via fallback method");
+    // Charger le script via notre proxy pour contourner CSP
+    const script = document.createElement('script');
+    script.src = '/api/payplug/sdk.js';
+    script.async = true;
+    
+    script.onload = () => {
+      // Attendre que PayPlug soit disponible
+      let checkCount = 0;
+      const checkInterval = setInterval(() => {
+        if ((window as any).Payplug) {
+          clearInterval(checkInterval);
+          console.log("✅ PayPlug SDK loaded successfully via proxy");
           resolve();
-        };
-        
-        script.onerror = () => {
-          console.error("❌ All methods failed to load PayPlug SDK");
-          reject(new Error('Failed to load PayPlug SDK'));
-        };
-        
-        document.head.appendChild(script);
-      });
+        } else if (checkCount++ > 20) {
+          clearInterval(checkInterval);
+          console.error("❌ PayPlug SDK failed to initialize after proxy load");
+          reject(new Error('PayPlug SDK failed to initialize'));
+        }
+      }, 100);
+    };
+    
+    script.onerror = () => {
+      console.error("❌ Failed to load PayPlug SDK via proxy");
+      reject(new Error('Failed to load PayPlug SDK'));
+    };
+    
+    document.head.appendChild(script);
   });
 };
 

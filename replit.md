@@ -3,6 +3,17 @@
 ## Project Overview
 A comprehensive waste management and sustainability platform that leverages intelligent technologies to enhance environmental engagement through digital solutions. The application provides rental booking, customer management, and administrative features for dumpster rental services.
 
+## Recent Changes (July 15, 2025)
+
+### ✅ MIGRATION REPLIT AGENT VERS VPS - ERREURS APIQUEST CORRIGÉES (July 15, 2025)
+✓ CORRIGÉ: Erreur "'/api/auth/login' is not a valid HTTP method" dans queryClient
+✓ FIXÉ: Ordre des paramètres apiRequest(url, method, data) dans tous les fichiers
+✓ SUPPRIMÉ: Fichiers JavaScript compilés obsolètes causant des conflits
+✓ RÉPARÉ: OrderManagement.tsx, PaymentStep.tsx, checkout-redesign.tsx, client-dashboard.tsx
+✓ CONFIGURÉ: Base de données PostgreSQL avec toutes les variables d'environnement
+✓ MIGRÉ: 19 tables de schéma Drizzle créées avec succès
+✓ VALIDÉ: Application prête pour déploiement VPS sans erreurs de paramètres fetch
+
 ## Recent Changes (January 11, 2025)
 
 ### ✅ PERFECTIONNEMENT ULTIME - 10000% SÉCURITÉ & FONCTIONNALITÉ (January 11, 2025)

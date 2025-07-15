@@ -122,7 +122,7 @@ export default function ClientDashboard() {
   // Mutations
   const updateOrderMutation = useMutation({
     mutationFn: async ({ orderId, updates }: { orderId: number; updates: any }) => {
-      await apiRequest('PUT', `/api/orders/${orderId}`, updates);
+      await apiRequest(`/api/orders/${orderId}`, 'PUT', updates);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/orders/my-orders'] });
@@ -143,7 +143,7 @@ export default function ClientDashboard() {
 
   const createRecurringOrderMutation = useMutation({
     mutationFn: async (data: any) => {
-      await apiRequest('POST', '/api/orders/recurring', data);
+      await apiRequest('/api/orders/recurring', 'POST', data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/orders/recurring'] });
@@ -172,7 +172,7 @@ export default function ClientDashboard() {
 
   const cancelOrderMutation = useMutation({
     mutationFn: async (orderId: number) => {
-      await apiRequest('PUT', `/api/orders/${orderId}/cancel`);
+      await apiRequest(`/api/orders/${orderId}/cancel`, 'PUT');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/orders/my-orders'] });

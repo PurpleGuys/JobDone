@@ -16,6 +16,7 @@ import { emailService } from "./emailService";
 import { sendGridService } from "./sendgridService";
 import { NotificationService } from "./notificationService";
 import { PayPlugService } from "./payplugService";
+import { servePayPlugSDK } from "./payplug-sdk-proxy";
 import { insertOrderSchema, insertUserSchema, loginSchema, updateUserSchema, changePasswordSchema, insertRentalPricingSchema, updateRentalPricingSchema, insertServiceSchema, insertTransportPricingSchema, updateTransportPricingSchema, insertWasteTypeSchema, insertTreatmentPricingSchema, updateTreatmentPricingSchema, insertBankDepositSchema, updateBankDepositSchema, insertFidSchema, updateFidSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
@@ -685,7 +686,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
+  // Servir le SDK PayPlug localement pour éviter les problèmes CSP
+  app.get("/assets/payplug-sdk.js", servePayPlugSDK);
 
   // PayPlug payment creation
   app.post("/api/payplug/payment", async (req, res) => {

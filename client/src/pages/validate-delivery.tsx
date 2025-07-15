@@ -35,7 +35,7 @@ export default function ValidateDelivery() {
 
     setIsLoading(true);
     try {
-      const response = await apiRequest(`/api/orders/validate-delivery-date/${token}`, 'POST', {
+      const response = await apiRequest('POST', `/api/orders/validate-delivery-date/${token}`, {
         accepted
       });
 

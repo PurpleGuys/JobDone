@@ -51,8 +51,8 @@ DATABASE_URL=postgresql://localhost:5432/bennespro
   const criticalVars = [
     'DATABASE_URL',
     'GOOGLE_MAPS_API_KEY',
-    'VITE_PAYPLUG_PUBLIC_KEY',
-    'PAYPLUG_SECRET_KEY'
+    'VITE_STRIPE_PUBLIC_KEY',
+    'STRIPE_SECRET_KEY'
   ];
   
   const missingVars = criticalVars.filter(v => !process.env[v]);
@@ -86,9 +86,9 @@ export const ENV = {
   // Google Maps
   GOOGLE_MAPS_API_KEY: getEnvVar('GOOGLE_MAPS_API_KEY'),
   
-  // PayPlug
-  PAYPLUG_PUBLIC_KEY: getEnvVar('VITE_PAYPLUG_PUBLIC_KEY'),
-  PAYPLUG_SECRET_KEY: getEnvVar('PAYPLUG_SECRET_KEY'),
+  // Stripe
+  STRIPE_PUBLIC_KEY: getEnvVar('VITE_STRIPE_PUBLIC_KEY'),
+  STRIPE_SECRET_KEY: getEnvVar('STRIPE_SECRET_KEY'),
   
   // Application
   NODE_ENV: getEnvVar('NODE_ENV', 'development'),

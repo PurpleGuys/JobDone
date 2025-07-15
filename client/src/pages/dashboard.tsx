@@ -3965,7 +3965,7 @@ function MyActivitiesPage() {
     setLoading(true);
     try {
       const method = existingActivities ? 'PUT' : 'POST';
-      const result = await apiRequest('/api/admin/company-activities', method, activities);
+      const result = await apiRequest(method, '/api/admin/company-activities', activities);
 
       if (!result) throw new Error('Erreur lors de la sauvegarde');
 
@@ -5467,7 +5467,7 @@ function DeleteOrderDialog({ order, onSuccess }: { order: any; onSuccess: () => 
 
   const deleteOrderMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest(`/api/admin/orders/${order.id}`, 'DELETE');
+      await apiRequest('DELETE', `/api/admin/orders/${order.id}`);
     },
     onSuccess: () => {
       setIsOpen(false);

@@ -482,7 +482,7 @@ export class DatabaseStorage implements IStorage {
     await db
       .update(orders)
       .set({
-        payplugPaymentId: paymentIntentId,
+        stripePaymentIntentId: paymentIntentId,
         paymentStatus: status,
         updatedAt: new Date()
       })

@@ -94,7 +94,7 @@ export default function CheckoutRedesign() {
         acceptTerms
       };
 
-      const response = await apiRequest('/api/orders', 'POST', orderData);
+      const response = await apiRequest('POST', '/api/orders', orderData);
       
       toast({
         title: "✅ Commande créée avec succès !",
@@ -329,7 +329,7 @@ export default function CheckoutRedesign() {
                   <div className="text-center text-xs text-gray-500 pt-2">
                     <p className="flex items-center justify-center">
                       <Clock className="h-3 w-3 mr-1" />
-                      Paiement sécurisé par PayPlug
+                      Paiement sécurisé par Stripe
                     </p>
                   </div>
                 </CardContent>

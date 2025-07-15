@@ -3,27 +3,6 @@
 ## Project Overview
 A comprehensive waste management and sustainability platform that leverages intelligent technologies to enhance environmental engagement through digital solutions. The application provides rental booking, customer management, and administrative features for dumpster rental services.
 
-## Recent Changes (July 15, 2025)
-
-### ✅ VPS DEPLOYMENT CONFIGURATION FIX - ERREURS TSCONFIG CORRIGÉES (July 15, 2025)
-✓ CRÉÉ: tsconfig.node.json manquant pour compilation TypeScript VPS
-✓ AJOUTÉ: vite.config.production.ts compatible Node.js v18 avec __dirname fix
-✓ CORRIGÉ: Erreur "ENOENT: no such file or directory, open 'tsconfig.node.json'"
-✓ IMPLÉMENTÉ: Script vps-deploy.sh avec configuration production optimisée
-✓ RÉSOLU: Problème import.meta.dirname non compatible Node.js v18
-✓ CONFIGURÉ: Alias paths corrects pour @/, @shared, @assets dans production
-✓ VALIDÉ: Build Vite compatible VPS avec rollupOptions manualChunks
-✓ TESTÉ: Script de déploiement avec fallback HTML et gestion d'erreurs
-
-### ✅ MIGRATION REPLIT AGENT VERS VPS - ERREURS APIQUEST CORRIGÉES (July 15, 2025)
-✓ CORRIGÉ: Erreur "'/api/auth/login' is not a valid HTTP method" dans queryClient
-✓ FIXÉ: Ordre des paramètres apiRequest(url, method, data) dans tous les fichiers
-✓ SUPPRIMÉ: Fichiers JavaScript compilés obsolètes causant des conflits
-✓ RÉPARÉ: OrderManagement.tsx, PaymentStep.tsx, checkout-redesign.tsx, client-dashboard.tsx
-✓ CONFIGURÉ: Base de données PostgreSQL avec toutes les variables d'environnement
-✓ MIGRÉ: 19 tables de schéma Drizzle créées avec succès
-✓ VALIDÉ: Application prête pour déploiement VPS sans erreurs de paramètres fetch
-
 ## Recent Changes (January 11, 2025)
 
 ### ✅ PERFECTIONNEMENT ULTIME - 10000% SÉCURITÉ & FONCTIONNALITÉ (January 11, 2025)

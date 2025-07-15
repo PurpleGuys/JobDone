@@ -42,7 +42,7 @@ export default function AdBlockNotice({ onRetry, showAlternatives = true }: AdBl
             <div>
               <div className="font-medium mb-1">🔒 Pourquoi c'est sécurisé:</div>
               <div className="text-gray-600">
-                Nous utilisons PayPlug, le leader français des paiements en ligne, 
+                Nous utilisons Stripe, le leader mondial des paiements en ligne, 
                 utilisé par des millions d'entreprises pour sécuriser leurs transactions.
               </div>
             </div>

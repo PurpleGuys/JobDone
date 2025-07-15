@@ -22,9 +22,9 @@ export default defineConfig({
     }
   },
   define: {
-    'process.env.VITE_STRIPE_PUBLIC_KEY': JSON.stringify('pk_live_51RTkOEH7j6Qmye8ANaVnmmha9hqIUhENTbJo94UZ9D7Ia3hRu7jFbVcBtfO4lJvLiluHxqdproixaCIglmZORP0h00IWlpRCiS'),
-    'import.meta.env.VITE_STRIPE_PUBLIC_KEY': JSON.stringify('pk_live_51RTkOEH7j6Qmye8ANaVnmmha9hqIUhENTbJo94UZ9D7Ia3hRu7jFbVcBtfO4lJvLiluHxqdproixaCIglmZORP0h00IWlpRCiS'),
-    'window.VITE_STRIPE_PUBLIC_KEY': JSON.stringify('pk_live_51RTkOEH7j6Qmye8ANaVnmmha9hqIUhENTbJo94UZ9D7Ia3hRu7jFbVcBtfO4lJvLiluHxqdproixaCIglmZORP0h00IWlpRCiS')
+    'process.env.VITE_PAYPLUG_PUBLIC_KEY': JSON.stringify('your_payplug_public_key_here'),
+    'import.meta.env.VITE_PAYPLUG_PUBLIC_KEY': JSON.stringify('your_payplug_public_key_here'),
+    'window.VITE_PAYPLUG_PUBLIC_KEY': JSON.stringify('your_payplug_public_key_here')
   },
   resolve: {
     alias: {

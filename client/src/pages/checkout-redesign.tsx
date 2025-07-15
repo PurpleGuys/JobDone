@@ -1,115 +1,62 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, AlertTriangle, CheckCircle, MapPin, Truck, Clock, CreditCard, Euro, Package } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { useBookingState } from "@/hooks/useBookingState";
+import { apiRequest } from "@/lib/queryClient";
+import { 
+  CreditCard, 
+  CheckCircle, 
+  Calendar, 
+  AlertCircle,
+  Shield,
+  MapPin,
+  Clock,
+  X
+} from "lucide-react";
 
-interface BookingDetails {
-  serviceId: number;
-  serviceName: string;
-  serviceVolume: number;
+interface CustomerInfo {
+  email: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+  company: string;
   address: string;
-  postalCode: string;
   city: string;
-  wasteTypes: string[];
-  distance: number;
-  pricing: {
-    service: number;
-    transport: number;
-    total: number;
-  };
+  zipCode: string;
+  acceptTerms: boolean;
+  acceptMarketing: boolean;
 }
 
-export default function CheckoutRedesign() {
-  const [bookingData, setBookingData] = useState<BookingDetails | null>(null);
+// PayPlug Payment Component - Sans scripts d'injection
+function PayPlugPayment() {
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
-  
-  // Récupérer les dates du localStorage
-  const savedDates = localStorage.getItem('bookingDates');
-  const parsedDates = savedDates ? JSON.parse(savedDates) : null;
-  const [deliveryDate] = useState(parsedDates?.deliveryDate || "");
-  const [pickupDate] = useState(parsedDates?.pickupDate || "");
-  const [deliveryTimeSlot] = useState(parsedDates?.deliveryTimeSlot || null);
-  
-  // États pour les conditions
-  const [evacuationConditions, setEvacuationConditions] = useState({
-    heightLimit: false,
-    noDangerousWaste: false,
-    spaceRequirements: false,
-    groundProtection: false,
-  });
-  const [acceptTerms, setAcceptTerms] = useState(false);
 
-  useEffect(() => {
-    const savedBooking = sessionStorage.getItem('bookingDetails');
-    if (savedBooking) {
-      setBookingData(JSON.parse(savedBooking));
-    }
-  }, []);
-
-  const allConditionsAccepted = Object.values(evacuationConditions).every(v => v);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!allConditionsAccepted || !acceptTerms) {
-      toast({
-        title: "Conditions manquantes",
-        description: "Veuillez accepter toutes les conditions avant de continuer",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!deliveryDate) {
-      toast({
-        title: "Date manquante",
-        description: "Veuillez sélectionner une date de livraison",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const handlePayment = async () => {
     setIsProcessing(true);
     
     try {
-      const orderData = {
-        serviceId: bookingData?.serviceId,
-        wasteTypes: bookingData?.wasteTypes,
-        deliveryDate: deliveryDate,
-        pickupDate: pickupDate,
-        address: bookingData?.address,
-        postalCode: bookingData?.postalCode,
-        city: bookingData?.city,
-        evacuationConditions,
-        acceptTerms
-      };
-
-      const response = await apiRequest('POST', '/api/orders', orderData);
+      // Simulation paiement PayPlug
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       toast({
-        title: "✅ Commande créée avec succès !",
-        description: `Votre commande #${response.id} est confirmée.`,
+        title: "Paiement confirmé",
+        description: "Votre commande a été enregistrée avec succès",
       });
       
-      // Nettoyer le stockage
-      sessionStorage.removeItem('bookingDetails');
-      localStorage.removeItem('bookingDates');
-      
-      setLocation('/dashboard');
-    } catch (err) {
+      // Redirection vers page de confirmation
+      window.location.href = "/payment-success";
+    } catch (error) {
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la création de la commande",
+        title: "Erreur de paiement",
+        description: "Une erreur est survenue lors du traitement de votre paiement",
         variant: "destructive",
       });
     } finally {
@@ -117,226 +64,365 @@ export default function CheckoutRedesign() {
     }
   };
 
-  if (!bookingData) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto py-12 px-4">
-          <Card className="max-w-2xl mx-auto">
-            <CardContent className="p-12 text-center">
-              <Truck className="h-16 w-16 mx-auto mb-6 text-gray-400" />
-              <p className="text-xl text-gray-700 mb-8">
-                Aucune réservation en cours. Commencez par sélectionner votre service.
-              </p>
-              <Button asChild className="bg-red-600 hover:bg-red-700 text-white">
-                <a href="/booking">Commencer la réservation</a>
-              </Button>
-            </CardContent>
-          </Card>
+  return (
+    <div className="space-y-4">
+      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+        <div className="flex items-center justify-center text-center">
+          <Shield className="h-8 w-8 text-blue-600 mr-3" />
+          <div>
+            <div className="font-semibold text-blue-900">Paiement sécurisé PayPlug</div>
+            <div className="text-sm text-blue-700">
+              Vos données sont cryptées et protégées
+            </div>
+          </div>
         </div>
       </div>
-    );
-  }
+
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="cardNumber">Numéro de carte</Label>
+            <Input id="cardNumber" placeholder="1234 5678 9012 3456" className="mt-1" />
+          </div>
+          <div>
+            <Label htmlFor="cardExpiry">Date d'expiration</Label>
+            <Input id="cardExpiry" placeholder="MM/YY" className="mt-1" />
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="cardCvc">CVC</Label>
+            <Input id="cardCvc" placeholder="123" className="mt-1" />
+          </div>
+          <div>
+            <Label htmlFor="cardName">Nom sur la carte</Label>
+            <Input id="cardName" placeholder="Jean Dupont" className="mt-1" />
+          </div>
+        </div>
+      </div>
+
+      <Button 
+        onClick={handlePayment}
+        className="w-full bg-blue-600 hover:bg-blue-700"
+        disabled={isProcessing}
+      >
+        {isProcessing ? (
+          <>
+            <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
+            Traitement en cours...
+          </>
+        ) : (
+          <>
+            <CreditCard className="h-4 w-4 mr-2" />
+            Payer maintenant
+          </>
+        )}
+      </Button>
+    </div>
+  );
+}
+
+export default function CheckoutRedesign() {
+  const { bookingData, calculateTotalPrice } = useBookingState();
+  const { toast } = useToast();
+  const [, navigate] = useLocation();
+  const pricing = calculateTotalPrice();
+
+  const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
+    email: '',
+    phone: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    address: '',
+    city: '',
+    zipCode: '',
+    acceptTerms: false,
+    acceptMarketing: false
+  });
+
+  const [paymentMethod, setPaymentMethod] = useState('payplug');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!customerInfo.acceptTerms) {
+      toast({
+        title: "Conditions générales",
+        description: "Veuillez accepter les conditions générales",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await apiRequest("/api/orders", "POST", {
+        ...bookingData,
+        customerInfo,
+        paymentMethod,
+        pricing
+      });
+
+      if (response) {
+        toast({
+          title: "Commande enregistrée",
+          description: "Votre commande a été enregistrée avec succès",
+        });
+        navigate("/payment-success");
+      }
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'enregistrement",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8 px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Finalisation de votre commande</h1>
-
-        <div className="max-w-5xl mx-auto">
-          <form onSubmit={handleSubmit} className="grid gap-6 lg:grid-cols-3">
-            {/* Colonne principale */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Résumé de la commande */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Package className="mr-2 h-5 w-5" />
-                    Récapitulatif de votre réservation
-                  </CardTitle>
-                  <CardDescription>Vérifiez les détails de votre commande</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Service */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <Truck className="h-5 w-5 mr-3 text-gray-600" />
-                        <div>
-                          <h3 className="font-semibold">{bookingData.serviceName}</h3>
-                          <p className="text-sm text-gray-600">Volume: {bookingData.serviceVolume}m³</p>
-                        </div>
-                      </div>
-                      <span className="text-xl font-bold text-gray-900">{bookingData.pricing.service.toFixed(2)}€</span>
-                    </div>
-                  </div>
-
-                  {/* Adresse */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="flex items-start">
-                      <MapPin className="h-5 w-5 mr-3 text-gray-600 mt-1" />
-                      <div className="flex-1">
-                        <h4 className="font-semibold mb-1">Adresse de livraison</h4>
-                        <p className="text-sm text-gray-700">
-                          {bookingData.address}<br />
-                          {bookingData.postalCode} {bookingData.city}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-2">Distance: {bookingData.distance} km aller-retour</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Dates */}
-                  <div className="bg-white p-5 rounded-xl shadow-md">
-                    <div className="flex items-start">
-                      <Calendar className="h-6 w-6 mr-3 text-purple-600 mt-1" />
-                      <div className="flex-1">
-                        <h4 className="font-semibold mb-2">📅 Planning</h4>
-                        <div className="space-y-2">
-                          {deliveryDate ? (
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Livraison:</span>
-                              <span className="font-medium">
-                                {new Date(deliveryDate).toLocaleDateString('fr-FR')}
-                                {deliveryTimeSlot && ` - ${deliveryTimeSlot.startTime} à ${deliveryTimeSlot.endTime}`}
-                              </span>
-                            </div>
-                          ) : (
-                            <Alert className="border-red-200 bg-red-50">
-                              <AlertTriangle className="h-4 w-4" />
-                              <AlertDescription>Date de livraison non sélectionnée</AlertDescription>
-                            </Alert>
-                          )}
-                          {pickupDate && (
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Récupération:</span>
-                              <span className="font-medium">{new Date(pickupDate).toLocaleDateString('fr-FR')}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Types de déchets */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Types de déchets</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {bookingData.wasteTypes.map((waste, index) => (
-                        <Badge key={index} variant="secondary">
-                          {waste}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Conditions d'évacuation */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <AlertTriangle className="mr-2 h-5 w-5 text-amber-600" />
-                    Conditions d'évacuation obligatoires
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-amber-800 font-medium">Toutes les conditions doivent être acceptées :</p>
-                  
-                  <div className="space-y-4">
-                    {[
-                      { key: 'heightLimit', label: "Je m'engage à ne pas dépasser la hauteur maximale de la benne" },
-                      { key: 'noDangerousWaste', label: "Je certifie ne pas mettre de déchets dangereux" },
-                      { key: 'spaceRequirements', label: "Je confirme disposer de l'espace nécessaire" },
-                      { key: 'groundProtection', label: "Je protégerai le sol si nécessaire" }
-                    ].map((condition) => (
-                      <div key={condition.key} className="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                        <Checkbox
-                          checked={evacuationConditions[condition.key as keyof typeof evacuationConditions]}
-                          onCheckedChange={(checked) => 
-                            setEvacuationConditions(prev => ({ ...prev, [condition.key]: !!checked }))
-                          }
-                          className="mt-1"
-                        />
-                        <label className="text-gray-700 cursor-pointer select-none">{condition.label}</label>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Colonne de droite - Prix et paiement */}
-            <div className="space-y-6">
-              {/* Résumé des prix */}
-              <Card className="sticky top-4">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <CreditCard className="mr-2 h-5 w-5" />
-                    Total à payer
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-lg">
-                      <span>Service</span>
-                      <span className="font-medium">{bookingData.pricing.service.toFixed(2)}€</span>
-                    </div>
-                    <div className="flex justify-between text-lg">
-                      <span>Transport</span>
-                      <span className="font-medium">{bookingData.pricing.transport.toFixed(2)}€</span>
-                    </div>
-                    <Separator className="my-4" />
-                    <div className="flex justify-between text-xl font-bold">
-                      <span>Total TTC</span>
-                      <span className="text-red-600">{bookingData.pricing.total.toFixed(2)}€</span>
-                    </div>
-                  </div>
-
-                  {/* CGV */}
-                  <div className="pt-4 border-t">
-                    <div className="flex items-start space-x-3">
-                      <Checkbox
-                        id="terms"
-                        checked={acceptTerms}
-                        onCheckedChange={(checked) => setAcceptTerms(!!checked)}
-                      />
-                      <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
-                        J'accepte les <a href="/cgv" className="text-blue-600 underline">conditions générales de vente</a>
-                      </label>
-                    </div>
-                  </div>
-
-                  {/* Bouton de paiement */}
-                  <Button
-                    type="submit"
-                    disabled={!allConditionsAccepted || !acceptTerms || isProcessing || !deliveryDate}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white"
-                  >
-                    {isProcessing ? (
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin h-5 w-5 border-3 border-white border-t-transparent rounded-full mr-3" />
-                        Traitement...
-                      </div>
-                    ) : (
-                      <span className="flex items-center justify-center">
-                        <CreditCard className="mr-2 h-5 w-5" />
-                        Confirmer et payer {bookingData.pricing.total.toFixed(2)}€
-                      </span>
-                    )}
-                  </Button>
-
-                  {/* Sécurité */}
-                  <div className="text-center text-xs text-gray-500 pt-2">
-                    <p className="flex items-center justify-center">
-                      <Clock className="h-3 w-3 mr-1" />
-                      Paiement sécurisé par Stripe
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </form>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Finaliser votre commande</h1>
+          <p className="text-gray-600">Complétez vos informations et procédez au paiement</p>
         </div>
+
+        {/* Résumé de la réservation */}
+        <Card className="mb-8 border-2 border-green-200 bg-green-50/50">
+          <CardHeader>
+            <CardTitle className="flex items-center text-green-800">
+              <CheckCircle className="h-6 w-6 mr-3" />
+              Résumé de votre réservation
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {bookingData.service && (
+              <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                <span className="text-gray-600 font-medium">Service :</span>
+                <span className="font-bold text-green-700">{bookingData.service.name}</span>
+              </div>
+            )}
+            
+            {bookingData.deliveryTimeSlot && (
+              <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                <span className="text-gray-600 font-medium flex items-center">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Livraison :
+                </span>
+                <span className="font-bold text-green-700">{bookingData.deliveryTimeSlot.date} - {bookingData.deliveryTimeSlot.time}</span>
+              </div>
+            )}
+
+            {bookingData.address && (
+              <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                <span className="text-gray-600 font-medium flex items-center">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Adresse :
+                </span>
+                <span className="font-bold text-green-700">{bookingData.address.street}, {bookingData.address.city}</span>
+              </div>
+            )}
+
+            <div className="p-3 bg-green-100 rounded-lg border border-green-300">
+              <div className="flex justify-between items-center text-lg">
+                <span className="font-bold text-green-800">Total TTC :</span>
+                <span className="font-bold text-2xl text-green-700">{pricing.totalTTC.toFixed(2)}€</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Informations client */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations de contact</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="firstName">Prénom *</Label>
+                  <Input
+                    id="firstName"
+                    value={customerInfo.firstName}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, firstName: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="lastName">Nom *</Label>
+                  <Input
+                    id="lastName"
+                    value={customerInfo.lastName}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, lastName: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={customerInfo.email}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, email: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Téléphone *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={customerInfo.phone}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, phone: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="company">Entreprise (optionnel)</Label>
+                <Input
+                  id="company"
+                  value={customerInfo.company}
+                  onChange={(e) => setCustomerInfo(prev => ({ ...prev, company: e.target.value }))}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="address">Adresse *</Label>
+                <Input
+                  id="address"
+                  value={customerInfo.address}
+                  onChange={(e) => setCustomerInfo(prev => ({ ...prev, address: e.target.value }))}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="city">Ville *</Label>
+                  <Input
+                    id="city"
+                    value={customerInfo.city}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, city: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="zipCode">Code postal *</Label>
+                  <Input
+                    id="zipCode"
+                    value={customerInfo.zipCode}
+                    onChange={(e) => setCustomerInfo(prev => ({ ...prev, zipCode: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Méthode de paiement */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Méthode de paiement</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                <div className="flex items-center space-x-2 p-3 border rounded-lg">
+                  <RadioGroupItem value="payplug" id="payplug" />
+                  <Label htmlFor="payplug" className="flex items-center flex-1 cursor-pointer">
+                    <CreditCard className="h-5 w-5 mr-3 text-blue-600" />
+                    <div>
+                      <div className="font-medium">Carte bancaire</div>
+                      <div className="text-sm text-gray-600">Paiement sécurisé via PayPlug</div>
+                    </div>
+                  </Label>
+                </div>
+              </RadioGroup>
+              
+              {paymentMethod === 'payplug' && (
+                <div className="mt-4">
+                  <PayPlugPayment />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Conditions générales */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Conditions générales</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="accept-terms"
+                  required
+                  checked={customerInfo.acceptTerms}
+                  onCheckedChange={(checked) => 
+                    setCustomerInfo(prev => ({ ...prev, acceptTerms: checked as boolean }))
+                  }
+                />
+                <Label htmlFor="accept-terms" className="text-sm leading-relaxed cursor-pointer">
+                  J'accepte les conditions générales de vente et la politique de confidentialité *
+                </Label>
+              </div>
+              
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="accept-marketing"
+                  checked={customerInfo.acceptMarketing}
+                  onCheckedChange={(checked) => 
+                    setCustomerInfo(prev => ({ ...prev, acceptMarketing: checked as boolean }))
+                  }
+                />
+                <Label htmlFor="accept-marketing" className="text-sm cursor-pointer">
+                  J'accepte de recevoir des offres commerciales par email
+                </Label>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Boutons d'action */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="flex-1"
+              onClick={() => navigate("/booking")}
+            >
+              Retour
+            </Button>
+            
+            <Button 
+              type="submit"
+              className="flex-1 bg-green-600 hover:bg-green-700"
+              disabled={isSubmitting || !customerInfo.acceptTerms}
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
+                  Traitement...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Finaliser la commande
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

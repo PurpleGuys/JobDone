@@ -39,11 +39,11 @@ function log(message: string, source = "express", level = "INFO") {
         directives: {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://js.stripe.com", "https://maps.googleapis.com"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.payplug.com", "https://secure.payplug.com", "https://api.payplug.com", "https://maps.googleapis.com", "https://maps.gstatic.com"],
           imgSrc: ["'self'", "data:", "https:", "blob:"],
-          connectSrc: ["'self'", "https://api.stripe.com", "https://maps.googleapis.com"],
+          connectSrc: ["'self'", "https://api.payplug.com", "https://secure.payplug.com", "https://maps.googleapis.com"],
           fontSrc: ["'self'", "https://fonts.gstatic.com"],
-          frameSrc: ["'self'", "https://js.stripe.com"]
+          frameSrc: ["'self'", "https://secure.payplug.com"]
         }
       },
       crossOriginEmbedderPolicy: false

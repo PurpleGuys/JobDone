@@ -25,7 +25,7 @@ export function OrderManagement({ order }: OrderManagementProps) {
 
   const confirmDeliveryMutation = useMutation({
     mutationFn: async (data: { confirmedDate: string; adminNotes: string }) => {
-      return await apiRequest('PUT', `/api/admin/orders/${order.id}/confirm-delivery`, data);
+      return await apiRequest(`/api/admin/orders/${order.id}/confirm-delivery`, 'PUT', data);
     },
     onSuccess: () => {
       toast({
@@ -48,7 +48,7 @@ export function OrderManagement({ order }: OrderManagementProps) {
 
   const resendConfirmationMutation = useMutation({
     mutationFn: async () => {
-      return await apiRequest('POST', `/api/admin/orders/${order.id}/resend-confirmation`);
+      return await apiRequest(`/api/admin/orders/${order.id}/resend-confirmation`, 'POST');
     },
     onSuccess: () => {
       toast({

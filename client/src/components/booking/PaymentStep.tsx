@@ -497,14 +497,10 @@ export default function PaymentStep() {
 
         // Créer le payment intent
         if (bookingData.service) {
-          const response = await apiRequest("/api/create-payment-intent", {
-            method: "POST",
-            body: JSON.stringify({
-              amount: pricing.totalTTC,
-              orderId: `temp-${Date.now()}`,
-            })
+          const data = await apiRequest("/api/create-payment-intent", "POST", {
+            amount: pricing.totalTTC,
+            orderId: `temp-${Date.now()}`,
           });
-          const data = await response.json();
           setClientSecret(data.clientSecret);
         }
       } catch (error) {

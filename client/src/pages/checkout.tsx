@@ -1,4 +1,4 @@
-// PayPlug integrated payments remplace Stripe
+// PayPlug integrated payments
 import { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

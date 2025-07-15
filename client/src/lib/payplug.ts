@@ -16,7 +16,7 @@ export const getPayPlugInstance = () => {
   return null;
 };
 
-// Export PayPlug promise for compatibility with Stripe-like pattern
+// Export PayPlug promise for compatibility with payment pattern
 export const payplugPromise = new Promise((resolve) => {
   if (typeof window !== 'undefined') {
     // Attendre que le DOM et PayPlug soient chargés

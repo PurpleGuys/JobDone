@@ -5,7 +5,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import path from "path";
-// PayPlug payment processing (replaced Stripe)
+// PayPlug payment processing
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { body, validationResult } from "express-validator";

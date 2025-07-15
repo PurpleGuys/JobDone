@@ -60,10 +60,10 @@ SENDGRID_VERIFIED_SENDER_EMAIL=""
 # Google Maps
 GOOGLE_MAPS_API_KEY=""
 
-# Stripe
-STRIPE_SECRET_KEY=""
-STRIPE_PUBLISHABLE_KEY=""
-STRIPE_WEBHOOK_SECRET="${secrets.WEBHOOK_SECRET}"
+# PayPlug
+PAYPLUG_SECRET_KEY=""
+PAYPLUG_PUBLISHABLE_KEY=""
+PAYPLUG_WEBHOOK_SECRET="${secrets.WEBHOOK_SECRET}"
 
 # ===========================================
 # CONFIGURATION MÉTIER
@@ -140,7 +140,7 @@ function main() {
     
     console.log('\n📋 Prochaines étapes:');
     console.log('   1. Configurez DATABASE_URL avec vos informations de base de données');
-    console.log('   2. Ajoutez vos clés API (SendGrid, Google Maps, Stripe)');
+    console.log('   2. Ajoutez vos clés API (SendGrid, Google Maps, PayPlug)');
     console.log('   3. Modifiez APP_BASE_URL avec votre domaine');
     console.log('   4. Lancez: chmod 600 .env (pour sécuriser le fichier)');
     console.log('   5. Testez la configuration avec: npm run dev');

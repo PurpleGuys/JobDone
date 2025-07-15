@@ -117,7 +117,7 @@ export const orders = pgTable("orders", {
   // Order status
   status: text("status").notNull().default("pending"), // pending, confirmed, delivered, completed, cancelled
   paymentStatus: text("payment_status").notNull().default("pending"), // pending, paid, failed, refunded
-  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  payplugPaymentId: text("payplug_payment_id"),
   
   // Post-order management and delivery date workflow
   estimatedDeliveryDate: timestamp("estimated_delivery_date"),

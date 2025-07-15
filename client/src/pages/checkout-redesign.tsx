@@ -329,7 +329,7 @@ export default function CheckoutRedesign() {
                   <div className="text-center text-xs text-gray-500 pt-2">
                     <p className="flex items-center justify-center">
                       <Clock className="h-3 w-3 mr-1" />
-                      Paiement sécurisé par Stripe
+                      Paiement sécurisé par PayPlug
                     </p>
                   </div>
                 </CardContent>

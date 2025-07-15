@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import "./lib/stripe-config"; // Load Stripe config first
+import "./lib/payplug-config"; // Load PayPlug config first
 import App from "./App";
 import "./index.css";
 

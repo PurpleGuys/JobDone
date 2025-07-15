@@ -5,7 +5,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import path from "path";
-import Stripe from "stripe";
+// PayPlug payment processing (replaced Stripe)
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { body, validationResult } from "express-validator";
@@ -15,6 +15,7 @@ import { DistanceService } from "./distanceService";
 import { emailService } from "./emailService";
 import { sendGridService } from "./sendgridService";
 import { NotificationService } from "./notificationService";
+import { PayPlugService } from "./payplugService";
 import { insertOrderSchema, insertUserSchema, loginSchema, updateUserSchema, changePasswordSchema, insertRentalPricingSchema, updateRentalPricingSchema, insertServiceSchema, insertTransportPricingSchema, updateTransportPricingSchema, insertWasteTypeSchema, insertTreatmentPricingSchema, updateTreatmentPricingSchema, insertBankDepositSchema, updateBankDepositSchema, insertFidSchema, updateFidSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
@@ -80,15 +81,11 @@ function generateFidPdfContent(fid: any) {
   };
 }
 
-// Initialize Stripe only if key is provided
-let stripe: Stripe | null = null;
-if (process.env.STRIPE_SECRET_KEY) {
-  stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2024-12-18.acacia" as any,
-  });
-  console.log("✅ Stripe initialized successfully");
+// Check PayPlug configuration
+if (PayPlugService.isConfigured()) {
+  console.log(`✅ PayPlug initialized successfully ${PayPlugService.isTestMode() ? '(TEST MODE)' : '(LIVE MODE)'}`);
 } else {
-  console.warn("⚠️ STRIPE_SECRET_KEY not configured. Payment features will be disabled.");
+  console.warn("⚠️ PAYPLUG_SECRET_KEY not configured. Payment features will be disabled.");
 }
 
 // Rate limiting for production only
@@ -198,7 +195,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             "'self'", 
             "'unsafe-inline'", 
             "'unsafe-eval'", 
-            "https://js.stripe.com",
+            "https://secure.payplug.com",
+            "https://api.payplug.com",
             "https://replit.com",
             "https://*.replit.com",
             "https://maps.googleapis.com",
@@ -221,9 +219,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
           connectSrc: [
             "'self'", 
-            "https://api.stripe.com",
-            "https://*.stripe.com",
-            "https://m.stripe.network",
+            "https://api.payplug.com",
+            "https://secure.payplug.com",
             "https://maps.googleapis.com",
             "https://api.sendgrid.com",
             "https://*.cloudflare.com",
@@ -232,8 +229,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
           frameSrc: [
             "'self'", 
-            "https://js.stripe.com",
-            "https://hooks.stripe.com"
+            "https://secure.payplug.com",
+            "https://api.payplug.com"
           ],
           workerSrc: ["'self'", "blob:"],
           childSrc: ["'self'", "blob:"],
@@ -688,31 +685,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Stripe payment intent creation
-  app.post("/api/create-payment-intent", async (req, res) => {
+  // PayPlug payment creation
+  app.post("/api/payplug/payment", async (req, res) => {
     try {
-      if (!stripe) {
+      if (!PayPlugService.isConfigured()) {
         return res.status(503).json({ 
-          message: "Payment processing is currently unavailable. Stripe is not configured." 
+          message: "Payment processing is currently unavailable. PayPlug is not configured." 
         });
       }
 
-      const { amount, orderId } = req.body;
+      const { orderId, amount, customerEmail, customerName } = req.body;
       
-      const paymentIntent = await stripe.paymentIntents.create({
+      // Split customer name into first and last name
+      const nameParts = customerName.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      
+      const payment = await PayPlugService.createPayment({
         amount: Math.round(amount * 100), // Convert euros to cents
-        currency: "eur",
+        currency: "EUR",
+        customer: {
+          email: customerEmail,
+          first_name: firstName,
+          last_name: lastName
+        },
         metadata: {
           orderId: orderId.toString(),
         },
+        hosted_payment: {
+          return_url: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/payment-success?order_id=${orderId}`,
+          cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/payment-cancel?order_id=${orderId}`
+        }
       });
 
       res.json({ 
-        clientSecret: paymentIntent.client_secret,
-        paymentIntentId: paymentIntent.id
+        id: payment.id,
+        paymentUrl: payment.hosted_payment?.payment_url,
+        paymentId: payment.id
       });
     } catch (error: any) {
-      res.status(500).json({ message: "Error creating payment intent: " + error.message });
+      res.status(500).json({ message: "Error creating PayPlug payment: " + error.message });
     }
   });
 

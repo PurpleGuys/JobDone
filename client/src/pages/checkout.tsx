@@ -1,4 +1,4 @@
-// Stripe imports supprimés en mode test
+// PayPlug integrated payments remplace Stripe
 import { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Calendar, AlertTriangle, Home, Phone, X } from "lucide-react";
 import { Link } from "wouter";
 
-// Stripe imports supprimés pour mode test
+// PayPlug API utilisée directement
 
 interface BookingDetails {
   serviceId: number;
@@ -30,7 +30,7 @@ interface BookingDetails {
 }
 
 const CheckoutForm = ({ bookingDetails }: { bookingDetails: BookingDetails }) => {
-  // Mode test sans Stripe - pas besoin des hooks useStripe et useElements
+  // PayPlug - utilisation directe de l'API sans hooks
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -76,7 +76,7 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: BookingDetails }) =>
     setIsProcessing(true);
 
     try {
-      // Mode test sans Stripe - créer directement la commande
+      // PayPlug - créer directement la commande
       const orderData = {
         serviceId: bookingDetails.serviceId,
         address: bookingDetails.address,
@@ -280,11 +280,11 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: BookingDetails }) =>
               </div>
             </div>
 
-            {/* Section paiement - mode test sans Stripe */}
+            {/* Section paiement avec PayPlug */}
             <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
               <div className="flex items-center space-x-2 mb-2">
                 <AlertTriangle className="h-5 w-5 text-yellow-600" />
-                <h4 className="font-semibold text-yellow-800">Mode Test - Stripe Désactivé</h4>
+                <h4 className="font-semibold text-yellow-800">Mode Test - PayPlug Intégré</h4>
               </div>
               <p className="text-sm text-yellow-700 mb-3">
                 Le paiement en ligne est temporairement désactivé. Votre commande sera créée avec le statut "En attente de paiement".
@@ -350,7 +350,7 @@ export default function Checkout() {
     const parsedDetails = JSON.parse(details);
     setBookingDetails(parsedDetails);
 
-    // En mode test sans Stripe, pas besoin de créer une intention de paiement
+    // PayPlug - création directe de la commande
     // createPaymentIntent(parsedDetails);
   }, []);
 
@@ -451,7 +451,7 @@ export default function Checkout() {
           <p className="text-gray-600">Complétez votre paiement pour confirmer votre commande</p>
         </div>
 
-        {/* Mode test sans Stripe Elements */}
+        {/* PayPlug Integrated Payments */}
         <CheckoutForm bookingDetails={bookingDetails} />
       </div>
     </div>

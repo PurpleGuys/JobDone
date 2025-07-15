@@ -199,8 +199,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
             "https://cdn.payplug.com",
             "https://secure.payplug.com",
             "https://api.payplug.com",
-            "https://replit.com",
-            "https://*.replit.com",
             "https://maps.googleapis.com",
             "https://maps.gstatic.com"
           ],

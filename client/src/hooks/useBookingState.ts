@@ -55,7 +55,7 @@ export function useBookingState() {
     deliveryTimeSlot: null,
     pickupTimeSlot: null,
     customer: null,
-    paymentMethod: "stripe",
+    paymentMethod: "payplug",
   });
 
   const updateService = (service: Service) => {
@@ -183,7 +183,7 @@ export function useBookingState() {
       deliveryTimeSlot: null,
       pickupTimeSlot: null,
       customer: null,
-      paymentMethod: "stripe",
+      paymentMethod: "payplug",
     });
   };
 

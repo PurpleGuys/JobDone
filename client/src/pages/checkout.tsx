@@ -339,11 +339,11 @@ export default function Checkout() {
     const details = sessionStorage.getItem('bookingDetails');
     if (!details) {
       toast({
-        title: "Erreur",
-        description: "Aucune réservation en cours. Retour à l'accueil.",
+        title: "Aucune réservation en cours",
+        description: "Commencez par sélectionner votre service.",
         variant: "destructive",
       });
-      setLocation('/');
+      setTimeout(() => setLocation('/booking'), 2000);
       return;
     }
 

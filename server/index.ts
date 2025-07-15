@@ -39,7 +39,7 @@ function log(message: string, source = "express", level = "INFO") {
         directives: {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://secure.payplug.com", "https://api.payplug.com", "https://maps.googleapis.com"],
+          scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://secure.payplug.com", "https://api.payplug.com", "https://cdn.payplug.com", "https://maps.googleapis.com"],
           imgSrc: ["'self'", "data:", "https:", "blob:"],
           connectSrc: ["'self'", "https://api.payplug.com", "https://secure.payplug.com", "https://maps.googleapis.com"],
           fontSrc: ["'self'", "https://fonts.gstatic.com"],
@@ -51,11 +51,25 @@ function log(message: string, source = "express", level = "INFO") {
     log("🔒 Security headers configured with Helmet", "STARTUP", "SUCCESS");
   }
 
-  // CORS for development
+  // CORS and CSP for development
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    
+    // Add CSP headers for development to support PayPlug
+    if (process.env.NODE_ENV !== "production") {
+      res.header("Content-Security-Policy", 
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://secure.payplug.com https://api.payplug.com https://cdn.payplug.com https://maps.googleapis.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "img-src 'self' data: https: blob:; " +
+        "connect-src 'self' https://api.payplug.com https://secure.payplug.com https://maps.googleapis.com ws: wss:; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "frame-src 'self' https://secure.payplug.com https://api.payplug.com;"
+      );
+    }
+    
     if (req.method === "OPTIONS") {
       res.sendStatus(200);
     } else {

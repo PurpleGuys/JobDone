@@ -422,15 +422,51 @@ function CheckoutForm() {
           type="button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-4 h-auto"
           onClick={() => {
-            // Sauvegarder les informations client avant de naviguer
-            updateCustomer({
-              firstName: customerInfo.firstName,
-              lastName: customerInfo.lastName,
-              email: customerInfo.email,
-              phone: customerInfo.phone,
-            });
-            // Naviguer vers la page checkout séparée
-            setLocation('/checkout');
+            // Sauvegarder toutes les données nécessaires dans sessionStorage
+            if (bookingData.service && bookingData.address && bookingData.deliveryTimeSlot) {
+              const bookingDetails = {
+                serviceId: bookingData.service.id,
+                serviceName: bookingData.service.name,
+                serviceVolume: bookingData.service.volume,
+                address: bookingData.address.street,
+                postalCode: bookingData.address.postalCode,
+                city: bookingData.address.city,
+                wasteTypes: bookingData.wasteTypes,
+                distance: 0,
+                pricing: {
+                  service: pricing.basePrice,
+                  transport: pricing.transportCost,
+                  total: pricing.totalTTC
+                }
+              };
+              sessionStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
+              
+              // Sauvegarder aussi les dates
+              const bookingDates = {
+                deliveryDate: bookingData.deliveryTimeSlot.date,
+                pickupDate: bookingData.pickupTimeSlot?.date,
+                deliveryTimeSlot: bookingData.deliveryTimeSlot,
+                pickupTimeSlot: bookingData.pickupTimeSlot
+              };
+              localStorage.setItem('bookingDates', JSON.stringify(bookingDates));
+              
+              // Sauvegarder les informations client
+              updateCustomer({
+                firstName: customerInfo.firstName,
+                lastName: customerInfo.lastName,
+                email: customerInfo.email,
+                phone: customerInfo.phone,
+              });
+              
+              // Naviguer vers la page checkout séparée
+              setLocation('/checkout');
+            } else {
+              toast({
+                title: "Informations manquantes",
+                description: "Veuillez compléter toutes les étapes avant de continuer.",
+                variant: "destructive",
+              });
+            }
           }}
         >
           <ExternalLink className="h-5 w-5 mr-2" />

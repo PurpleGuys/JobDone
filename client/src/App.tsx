@@ -68,7 +68,7 @@ function Router() {
       <Route path="/faq" component={FAQ} />
       <Route path="/introduction" component={Introduction} />
       <Route path="/auth-test" component={AuthTest} />
-      <Route path="/" component={Introduction} />
+      <Route path="/" component={Home} />
       <Route component={NotFound} />
     </Switch>
   );

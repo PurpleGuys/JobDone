@@ -1,0 +1,112 @@
+Le projet actuellement hébergé sur Replit rencontre des erreurs bloquantes en production liées :
+
+à une mauvaise configuration de la Content Security Policy (CSP)
+
+à la présence résiduelle de Stripe, alors que le système de paiement est censé fonctionner exclusivement avec Payplug
+
+🔥 Voici les erreurs actuelles remontées dans la console :
+pgsql
+Copier
+Modifier
+booking:1 Refused to load the script 'https://replit.com/public/js/replit-dev-banner.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com https://maps.gstatic.com". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.
+
+index-CUaOr6u0.js:498 Refused to load the script 'https://js.stripe.com/basil/stripe.js' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com https://maps.gstatic.com".
+
+Uncaught Error: Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY  
+Error: Failed to load Stripe.js
+🧩 Constats techniques :
+Le script Stripe tente encore d’être chargé malgré la suppression supposée de Stripe du projet.
+
+La clé VITE_STRIPE_PUBLIC_KEY est toujours recherchée dans les variables d’environnement, ce qui provoque une erreur critique.
+
+Le chargement du script https://replit.com/public/js/replit-dev-banner.js viole la CSP actuelle.
+
+La directive script-src est mal définie (ou incomplète), ce qui provoque des erreurs CORS et empêche les scripts tiers de se charger (y compris ceux légitimes comme Payplug ou Google Maps).
+
+🎯 Objectifs attendus de la correction (non négociables) :
+Suppression complète de Stripe
+
+Supprimer tous les packages liés à Stripe du package.json (par exemple stripe, @stripe/react-stripe-js, etc.)
+
+Supprimer toutes les références à Stripe dans :
+
+les fichiers frontend et backend
+
+les fichiers .env, .env.production, .env.local
+
+les composants React / Vue / autres
+
+les hooks, middleware, scripts de paiement, webhooks, validations
+
+Supprimer les appels résiduels à l’API Stripe (ex. : https://js.stripe.com, stripe.confirmCardPayment(), etc.)
+
+Supprimer les composants <Elements>, <StripeProvider> ou équivalents
+
+Intégration complète et propre de Payplug
+
+Implémenter les appels REST Payplug selon la documentation officielle :
+https://www.payplug.com/fr/documentation/api
+
+Gérer les scénarios suivants :
+
+création de paiement
+
+redirection vers le checkout Payplug
+
+gestion du retour (succès, échec)
+
+vérification du statut
+
+Ajouter les headers et endpoints nécessaires au backend (avec validation serveur).
+
+Prévoir les champs API_KEY ou AUTHORIZATION dans le .env.
+
+Mise à jour précise de la Content Security Policy (CSP)
+
+Ajouter explicitement les sources suivantes dans la directive script-src :
+
+'self'
+
+'unsafe-inline' (temporaire uniquement si besoin)
+
+'unsafe-eval' (à éviter si possible)
+
+https://cdn.payplug.com
+
+https://secure.payplug.com
+
+https://api.payplug.com
+
+https://maps.googleapis.com
+
+https://maps.gstatic.com
+
+(si besoin) https://replit.com/public/js/replit-dev-banner.js
+
+Vérifier que la directive script-src-elem est bien définie, ou que script-src suffit à couvrir tous les cas.
+
+Si nécessaire, ajouter des directives complémentaires pour connect-src, frame-src, style-src en fonction des appels Payplug/Maps utilisés.
+
+Vérification du fonctionnement en environnement VPS
+
+Le build (npm run build) doit fonctionner sans aucune erreur ni avertissement.
+
+Le démarrage (npm run start) doit fonctionner immédiatement sur un serveur Linux VPS (Ubuntu 22.04).
+
+Tous les appels API doivent fonctionner sans CORS ni erreurs liées à la CSP ou aux scripts.
+
+✅ Résultat attendu :
+✅ Plus aucune trace de Stripe dans tout le code.
+
+✅ Payplug 100 % opérationnel, stable, sécurisé.
+
+✅ La CSP doit être correctement configurée et respectée.
+
+✅ L’app fonctionne en local, sur Replit et sur un VPS de production.
+
+✅ Le projet est propre, sans erreurs en console.
+
+Pas de contournement. Pas de suppression sauvage de directives. Pas de mise en commentaire de scripts bloquants.
+Je veux une correction propre, durable, dans l’axe, 100 % fonctionnelle en production.
+
+Souhaites-tu que je t’écrive aussi un content-security-policy complet ou une base de paymentController.js adapté à Payplug ?

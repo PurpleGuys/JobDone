@@ -16,7 +16,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
-          stripe: ['@stripe/stripe-js', '@stripe/react-stripe-js']
+          payplug: ['@tanstack/react-query', 'wouter']
         }
       }
     }

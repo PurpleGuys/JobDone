@@ -1,0 +1,61 @@
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; preset: enabled)
+     Active: active (running) since Wed 2025-07-16 13:45:07 UTC; 8s ago
+ Invocation: 4bfb78da6943468ca2da0522f0746b3e
+       Docs: man:nginx(8)
+    Process: 5085 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 5086 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 5088 (nginx)
+      Tasks: 9 (limit: 37563)
+     Memory: 9.6M (peak: 10.4M)
+        CPU: 83ms
+     CGroup: /system.slice/nginx.service
+             ├─5088 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─5089 "nginx: worker process"
+             ├─5090 "nginx: worker process"
+             ├─5091 "nginx: worker process"
+             ├─5092 "nginx: worker process"
+             ├─5093 "nginx: worker process"
+             ├─5094 "nginx: worker process"
+             ├─5095 "nginx: worker process"
+             └─5096 "nginx: worker process"
+
+Jul 16 13:45:07 vps-41d62757 systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+Jul 16 13:45:07 vps-41d62757 nginx[5085]: 2025/07/16 13:45:07 [warn] 5085#5085: the "listen ... http2" directive is deprecate>
+Jul 16 13:45:07 vps-41d62757 nginx[5086]: 2025/07/16 13:45:07 [warn] 5086#5086: the "listen ... http2" directive is deprecate>
+Jul 16 13:45:07 vps-41d62757 systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+...skipping...
+● nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; preset: enabled)
+     Active: active (running) since Wed 2025-07-16 13:45:07 UTC; 8s ago
+ Invocation: 4bfb78da6943468ca2da0522f0746b3e
+       Docs: man:nginx(8)
+    Process: 5085 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+    Process: 5086 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+   Main PID: 5088 (nginx)
+      Tasks: 9 (limit: 37563)
+     Memory: 9.6M (peak: 10.4M)
+        CPU: 83ms
+     CGroup: /system.slice/nginx.service
+             ├─5088 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+             ├─5089 "nginx: worker process"
+             ├─5090 "nginx: worker process"
+             ├─5091 "nginx: worker process"
+             ├─5092 "nginx: worker process"
+             ├─5093 "nginx: worker process"
+             ├─5094 "nginx: worker process"
+             ├─5095 "nginx: worker process"
+             └─5096 "nginx: worker process"
+
+Jul 16 13:45:07 vps-41d62757 systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+Jul 16 13:45:07 vps-41d62757 nginx[5085]: 2025/07/16 13:45:07 [warn] 5085#5085: the "listen ... http2" directive is deprecate>
+Jul 16 13:45:07 vps-41d62757 nginx[5086]: 2025/07/16 13:45:07 [warn] 5086#5086: the "listen ... http2" directive is deprecate>
+Jul 16 13:45:07 vps-41d62757 systemd[1]: Started nginx.service - A high performance web server and a reverse proxy server.
+~
+~
+~
+~
+~
+~
+~
+

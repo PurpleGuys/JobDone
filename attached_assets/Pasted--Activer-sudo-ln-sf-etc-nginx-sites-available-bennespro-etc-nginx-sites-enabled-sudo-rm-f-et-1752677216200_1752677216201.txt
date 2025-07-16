@@ -1,0 +1,74 @@
+ Activer
+sudo ln -sf /etc/nginx/sites-available/bennespro /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+
+# Tester et recharger
+sudo nginx -t
+sudo systemctl reload nginx
+2025/07/16 14:44:33 [warn] 1616#1616: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/sites-enabled/bennespro:16
+2025/07/16 14:44:33 [warn] 1616#1616: the "listen ... http2" directive is deprecated, use the "http2" directive instead in /etc/nginx/sites-enabled/bennespro:17
+2025/07/16 14:44:33 [emerg] 1616#1616: unknown directive "temp_file_write_size" in /etc/nginx/sites-enabled/bennespro:71
+nginx: configuration file /etc/nginx/nginx.conf test failed
+nginx.service is not active, cannot reload.
+ubuntu@vps-41d62757:~/JobDone$ sudo systemctl reload nginx
+nginx.service is not active, cannot reload.
+ubuntu@vps-41d62757:~/JobDone$ sudo systemctl start n
+netplan-ovs-cleanup.service  networkd-dispatcher.service  nftables.service             nginx.service
+ubuntu@vps-41d62757:~/JobDone$ sudo systemctl start nginx
+Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+ubuntu@vps-41d62757:~/JobDone$ ^C
+ubuntu@vps-41d62757:~/JobDone$ systemctl status nginx.service
+× nginx.service - A high performance web server and a reverse proxy server
+     Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; preset: enabled)
+     Active: failed (Result: exit-code) since Wed 2025-07-16 14:45:06 UTC; 14s ago
+ Invocation: 29b58d8b44034a33812d48b97b22424f
+       Docs: man:nginx(8)
+    Process: 2074 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=1/FAILURE)
+   Mem peak: 1.4M
+        CPU: 11ms
+
+Jul 16 14:45:06 vps-41d62757 systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy serve>
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [warn] 2074#2074: the "listen ... http2" directive is depre>
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [warn] 2074#2074: the "listen ... http2" directive is depre>
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [emerg] 2074#2074: unknown directive "temp_file_write_size">
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: nginx: configuration file /etc/nginx/nginx.conf test failed
+Jul 16 14:45:06 vps-41d62757 systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+Jul 16 14:45:06 vps-41d62757 systemd[1]: nginx.service: Failed with result 'exit-code'.
+Jul 16 14:45:06 vps-41d62757 systemd[1]: Failed to start nginx.service - A high performance web server and a reverse prox>
+
+ubuntu@vps-41d62757:~/JobDone$ journalctl -xeu nginx.service
+░░ Subject: A start job for unit nginx.service has begun execution
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░
+░░ A start job for unit nginx.service has begun execution.
+░░
+░░ The job identifier is 3611.
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [warn] 2074#2074: the "listen ... http2" directive is depre>
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [warn] 2074#2074: the "listen ... http2" directive is depre>
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: 2025/07/16 14:45:06 [emerg] 2074#2074: unknown directive "temp_file_write_size">
+Jul 16 14:45:06 vps-41d62757 nginx[2074]: nginx: configuration file /etc/nginx/nginx.conf test failed
+Jul 16 14:45:06 vps-41d62757 systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+░░ Subject: Unit process exited
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░
+░░ An ExecStartPre= process belonging to unit nginx.service has exited.
+░░
+░░ The process' exit code is 'exited' and its exit status is 1.
+Jul 16 14:45:06 vps-41d62757 systemd[1]: nginx.service: Failed with result 'exit-code'.
+░░ Subject: Unit failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░
+░░ The unit nginx.service has entered the 'failed' state with result 'exit-code'.
+Jul 16 14:45:06 vps-41d62757 systemd[1]: Failed to start nginx.service - A high performance web server and a reverse prox>
+░░ Subject: A start job for unit nginx.service has failed
+░░ Defined-By: systemd
+░░ Support: http://www.ubuntu.com/support
+░░
+░░ A start job for unit nginx.service has finished with a failure.
+░░
+░░ The job identifier is 3611 and the job result is failed.
+

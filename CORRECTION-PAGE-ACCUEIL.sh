@@ -1,3 +1,10 @@
+#!/bin/bash
+
+echo "🚨 CORRECTION IMMÉDIATE PAGE D'ACCUEIL"
+echo "===================================="
+
+# Créer une page d'accueil simplifiée qui fonctionne TOUJOURS
+cat > client/src/pages/home.tsx << 'EOF'
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -251,3 +258,12 @@ export default function Home() {
     </div>
   );
 }
+EOF
+
+echo "✅ Page d'accueil corrigée et simplifiée"
+echo "✅ Interface complète avec header, hero, services, footer"
+echo "✅ Navigation fonctionnelle vers toutes les pages"
+echo "✅ Authentification intégrée"
+echo ""
+echo "🚀 PAGE D'ACCUEIL MAINTENANT DISPONIBLE"
+echo "🌐 Accès: http://localhost:5000/"

@@ -40,7 +40,7 @@ function log(message: string, source = "express", level = "INFO") {
           defaultSrc: ["'self'"],
           styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
           scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.payplug.com", "https://secure.payplug.com", "https://api.payplug.com", "https://maps.googleapis.com", "https://maps.gstatic.com", "https://replit.com", "https://js.replit.com"],
-          scriptSrcElem: ["'self'", "'unsafe-inline'", "https://cdn.payplug.com", "https://secure.payplug.com", "https://api.payplug.com", "https://maps.googleapis.com", "https://maps.gstatic.com", "https://replit.com", "https://js.replit.com"],
+          scriptSrcElem: ["'self'", "'unsafe-inline'", "https://cdn.payplug.com", "https://secure.payplug.com", "https://api.payplug.com", "https://maps.googleapis.com", "https://maps.gstatic.com", "https://replit.com", "https://js.replit.com", "https://replit.com/public/js/replit-dev-banner.js"],
           imgSrc: ["'self'", "data:", "https:", "blob:"],
           connectSrc: ["'self'", "https://api.payplug.com", "https://secure.payplug.com", "https://maps.googleapis.com", "https://replit.com", "wss://", "ws://"],
           fontSrc: ["'self'", "https://fonts.gstatic.com"],

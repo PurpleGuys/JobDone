@@ -1,0 +1,153 @@
+Avertissements Content-Security-Policy 2
+Content-Security-Policy : Impossible d’analyser l’hôte invalide wss:// purpleguy.world
+Content-Security-Policy : Impossible d’analyser l’hôte invalide ws:// purpleguy.world
+GET
+https://purpleguy.world/assets/index-BGktlCn_.js
+NS_ERROR_CORRUPTED_CONTENT
+
+	
+GET
+	https://purpleguy.world/assets/index-BGktlCn_.js
+État
+404
+VersionHTTP/2
+Transfert152 o (taille 0 o)
+Politique de référentno-referrer
+Résolution DNSSystème
+
+	
+content-encoding
+	gzip
+content-type
+	text/html
+date
+	Wed, 16 Jul 2025 15:38:03 GMT
+server
+	nginx/1.26.0 (Ubuntu)
+X-Firefox-Spdy
+	h2
+	
+Accept
+	*/*
+Accept-Encoding
+	gzip, deflate, br, zstd
+Accept-Language
+	fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Connection
+	keep-alive
+DNT
+	1
+Host
+	purpleguy.world
+Sec-Fetch-Dest
+	script
+Sec-Fetch-Mode
+	cors
+Sec-Fetch-Site
+	same-origin
+TE
+	trailers
+User-Agent
+	Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0
+GET
+https://purpleguy.world/assets/index-BEb0iJbV.css
+[HTTP/2 404  14ms]
+
+	
+GET
+	https://purpleguy.world/assets/index-BEb0iJbV.css
+État
+404
+VersionHTTP/2
+Transfert275 o (taille 162 o)
+Politique de référentno-referrer
+Résolution DNSSystème
+
+	
+content-encoding
+	gzip
+content-type
+	text/html
+date
+	Wed, 16 Jul 2025 15:38:03 GMT
+server
+	nginx/1.26.0 (Ubuntu)
+X-Firefox-Spdy
+	h2
+	
+Accept
+	text/css,*/*;q=0.1
+Accept-Encoding
+	gzip, deflate, br, zstd
+Accept-Language
+	fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Connection
+	keep-alive
+DNT
+	1
+Host
+	purpleguy.world
+Priority
+	u=2
+Sec-Fetch-Dest
+	style
+Sec-Fetch-Mode
+	cors
+Sec-Fetch-Site
+	same-origin
+TE
+	trailers
+User-Agent
+	Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0
+Le chargement du module à l’adresse « https://purpleguy.world/assets/index-BGktlCn_.js » a été bloqué en raison d’un type MIME interdit (« text/html »).
+purpleguy.world
+Échec du chargement pour le module dont la source est « https://purpleguy.world/assets/index-BGktlCn_.js ». purpleguy.world:10:71
+GET
+https://purpleguy.world/favicon.ico
+[HTTP/2 403  0ms]
+
+	
+GET
+	https://purpleguy.world/favicon.ico
+État
+403
+VersionHTTP/2
+Transfert123 o (taille 162 o)
+Politique de référentno-referrer
+Résolution DNSSystème
+
+	
+content-encoding
+	gzip
+content-type
+	text/html
+date
+	Wed, 16 Jul 2025 15:34:05 GMT
+server
+	nginx/1.26.0 (Ubuntu)
+X-Firefox-Spdy
+	h2
+	
+Accept
+	image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+Accept-Encoding
+	gzip, deflate, br, zstd
+Accept-Language
+	fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Connection
+	keep-alive
+DNT
+	1
+Host
+	purpleguy.world
+Sec-Fetch-Dest
+	image
+Sec-Fetch-Mode
+	no-cors
+Sec-Fetch-Site
+	same-origin
+User-Agent
+	Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0
+Erreur dans les liens source : JSON.parse: unexpected character at line 1 column 1 of the JSON data
+URL de la ressource : https://purpleguy.world/%3Canonymous%20code%3E
+URL du lien source : installHook.js.map

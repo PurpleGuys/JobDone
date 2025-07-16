@@ -1,8 +1,7 @@
 module.exports = {
   apps: [{
     name: 'bennespro',
-    script: './server/index.ts',
-    interpreter: 'tsx',
+    script: './dist/index.js',
     instances: 'max',
     exec_mode: 'cluster',
     env: {

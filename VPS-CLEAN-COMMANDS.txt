@@ -1,0 +1,40 @@
+# COMMANDES VPS UBUNTU - COPIER-COLLER DIRECTEMENT
+
+# 1. SE CONNECTER AU VPS
+ssh votre-user@purpleguy.world
+
+# 2. ARRÊTER TOUT
+sudo systemctl stop nginx
+sudo pm2 stop all
+sudo pkill -f node
+
+# 3. ALLER DANS LE DOSSIER
+cd /var/www/bennespro
+
+# 4. NETTOYER LES ANCIENS BUILDS
+sudo rm -rf dist/ node_modules/.cache .vite build/ public/
+
+# 5. CRÉER LE FICHIER STRIPE.JS QUI BLOQUE TOUT
+sudo mkdir -p client/src/lib
+sudo bash -c 'cat > client/src/lib/stripe.js << EOF
+// STRIPE DÉSACTIVÉ
+export const stripe = null;
+export const loadStripe = () => null;
+export default null;
+EOF'
+
+# 6. SUPPRIMER TOUTE RÉFÉRENCE STRIPE
+sudo find . -name "*.js" -o -name "*.ts" -o -name "*.tsx" | grep -v node_modules | xargs sudo sed -i 's/VITE_STRIPE_PUBLIC_KEY/VITE_PAYPLUG_PUBLIC_KEY/g'
+
+# 7. BUILD PROPRE
+sudo NODE_ENV=production npm run build
+
+# 8. VÉRIFIER LE BUILD
+sudo grep -r "stripe\|STRIPE" dist/ || echo "✅ Aucune référence Stripe"
+
+# 9. REDÉMARRER
+sudo nginx -t && sudo systemctl restart nginx
+sudo pm2 restart all
+
+# 10. TESTER
+curl https://purpleguy.world/api/health

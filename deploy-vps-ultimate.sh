@@ -78,9 +78,9 @@ SESSION_SECRET="votre-session-secret-super-secure-a-changer"
 GOOGLE_MAPS_API_KEY="votre-google-maps-api-key"
 VITE_GOOGLE_MAPS_API_KEY="votre-google-maps-api-key"
 
-# Stripe (remplacer par vos vraies clés)
-STRIPE_SECRET_KEY="votre-stripe-secret-key"
-VITE_STRIPE_PUBLIC_KEY="votre-stripe-public-key"
+# PayPlug (remplacer par vos vraies clés)
+PAYPLUG_SECRET_KEY="votre-payplug-secret-key"
+VITE_PAYPLUG_PUBLIC_KEY="votre-payplug-public-key"
 
 # SendGrid Email
 SENDGRID_API_KEY="votre-sendgrid-api-key"
@@ -215,8 +215,8 @@ server {
     add_header X-XSS-Protection "1; mode=block" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     
-    # CSP avec support Stripe et Google Maps
-    add_header Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: http:; connect-src 'self' https://api.stripe.com https://maps.googleapis.com wss://localhost:* ws://localhost:*; frame-src https://js.stripe.com https://hooks.stripe.com;" always;
+    # CSP avec support PayPlug et Google Maps
+    add_header Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.payplug.com https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https: http:; connect-src 'self' https://api.payplug.com https://maps.googleapis.com wss://localhost:* ws://localhost:*; frame-src https://js.payplug.com https://hooks.payplug.com;" always;
     
     # Logs
     access_log /var/log/nginx/bennespro_access.log;
@@ -382,7 +382,7 @@ echo "• Nginx Logs: /var/log/nginx/bennespro_*.log"
 
 echo -e "\n⚠️  ACTIONS REQUISES:"
 echo "1. Vérifiez et mettez à jour les clés API dans .env"
-echo "2. Testez le paiement Stripe"
+echo "2. Testez le paiement PayPlug"
 echo "3. Vérifiez Google Maps"
 echo "4. Configurez les DNS si nécessaire"
 

@@ -26,8 +26,8 @@ DB_NAME=bennespro
 
 # API Keys - REMPLACER PAR VOS VRAIES CLÉS
 GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
-VITE_STRIPE_PUBLIC_KEY=${VITE_STRIPE_PUBLIC_KEY}
-STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+VITE_PAYPLUG_PUBLIC_KEY=${VITE_PAYPLUG_PUBLIC_KEY}
+PAYPLUG_SECRET_KEY=${PAYPLUG_SECRET_KEY}
 SENDGRID_API_KEY=${SENDGRID_API_KEY}
 
 # Application
@@ -48,8 +48,8 @@ npm run build
 # 4. CORRECTION DES FICHIERS BUILD
 echo "🔧 Correction des fichiers build..."
 
-# Corriger les clés Stripe dans le build
-find dist -name "*.js" -type f -exec sed -i "s/VITE_STRIPE_PUBLIC_KEY_NOT_CONFIGURED/${VITE_STRIPE_PUBLIC_KEY}/g" {} \;
+# Corriger les clés PayPlug dans le build
+find dist -name "*.js" -type f -exec sed -i "s/VITE_PAYPLUG_PUBLIC_KEY_NOT_CONFIGURED/${VITE_PAYPLUG_PUBLIC_KEY}/g" {} \;
 
 # 5. CORRECTION DES CHEMINS D'IMAGES
 echo "📸 Création des images manquantes..."
@@ -110,8 +110,8 @@ server {
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
     
-    # CSP pour Stripe et Google Maps
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://maps.googleapis.com https://maps.gstatic.com; frame-src https://js.stripe.com https://hooks.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.stripe.com https://maps.googleapis.com;" always;
+    # CSP pour PayPlug et Google Maps
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.payplug.com https://maps.googleapis.com https://maps.gstatic.com; frame-src https://js.payplug.com https://hooks.payplug.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.payplug.com https://maps.googleapis.com;" always;
     
     # Locations
     location / {
@@ -195,8 +195,8 @@ curl -s -X POST https://purpleguy.world/api/calculate-pricing \
 echo -e "\n🖼️ Test Images:"
 curl -I https://purpleguy.world/uploads/services/9/placeholder.svg
 
-echo -e "\n💳 Test Stripe Config:"
-curl -s https://purpleguy.world/api/stripe/config
+echo -e "\n💳 Test PayPlug Config:"
+curl -s https://purpleguy.world/api/payplug/config
 
 echo -e "\n✅ Tests terminés"
 EOF

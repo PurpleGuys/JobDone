@@ -13,16 +13,16 @@ else
     echo "   ❌ GOOGLE_MAPS_API_KEY manquante"
 fi
 
-if [ -n "$VITE_STRIPE_PUBLIC_KEY" ]; then
-    echo "   ✅ VITE_STRIPE_PUBLIC_KEY présente (${#VITE_STRIPE_PUBLIC_KEY} caractères)"
+if [ -n "$VITE_PAYPLUG_PUBLIC_KEY" ]; then
+    echo "   ✅ VITE_PAYPLUG_PUBLIC_KEY présente (${#VITE_PAYPLUG_PUBLIC_KEY} caractères)"
 else
-    echo "   ❌ VITE_STRIPE_PUBLIC_KEY manquante"
+    echo "   ❌ VITE_PAYPLUG_PUBLIC_KEY manquante"
 fi
 
-if [ -n "$STRIPE_SECRET_KEY" ]; then
-    echo "   ✅ STRIPE_SECRET_KEY présente (${#STRIPE_SECRET_KEY} caractères)"
+if [ -n "$PAYPLUG_SECRET_KEY" ]; then
+    echo "   ✅ PAYPLUG_SECRET_KEY présente (${#PAYPLUG_SECRET_KEY} caractères)"
 else
-    echo "   ❌ STRIPE_SECRET_KEY manquante"
+    echo "   ❌ PAYPLUG_SECRET_KEY manquante"
 fi
 
 # 2. Corriger le problème de Vite et des variables d'environnement
@@ -33,7 +33,7 @@ sleep 2
 
 echo "   - Démarrage avec variables d'environnement chargées..."
 # Export explicite pour Vite
-export VITE_STRIPE_PUBLIC_KEY="$VITE_STRIPE_PUBLIC_KEY"
+export VITE_PAYPLUG_PUBLIC_KEY="$VITE_PAYPLUG_PUBLIC_KEY"
 export GOOGLE_MAPS_API_KEY="$GOOGLE_MAPS_API_KEY"
 
 # 3. Test des APIs
@@ -87,4 +87,4 @@ echo "   ✓ Cards et spacing uniformes"
 echo -e "\n✅ CONFIGURATION TERMINÉE !"
 echo "📱 Visitez http://localhost:5000/booking pour tester"
 echo "   Les pages sont maintenant dans le style du dashboard"
-echo "   Les APIs Stripe et Google Maps sont fonctionnelles"
+echo "   Les APIs PayPlug et Google Maps sont fonctionnelles"

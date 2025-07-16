@@ -317,9 +317,9 @@ services:
       - JWT_SECRET=ultraSecureJWTSecret2024BennesPro!
       - SENDGRID_API_KEY=optional
       - SENDGRID_VERIFIED_SENDER_EMAIL=noreply@bennespro.com
-      - STRIPE_SECRET_KEY=optional
-      - STRIPE_WEBHOOK_SECRET=optional
-      - VITE_STRIPE_PUBLIC_KEY=optional
+      - PAYPLUG_SECRET_KEY=optional
+      - PAYPLUG_WEBHOOK_SECRET=optional
+      - VITE_PAYPLUG_PUBLIC_KEY=optional
       - GOOGLE_MAPS_API_KEY=optional
       - REMONDIS_SALES_EMAIL=commercial@remondis.fr
     ports:
@@ -400,9 +400,9 @@ services:
       - JWT_SECRET=ultraSecureJWTSecret2024BennesPro!
       - SENDGRID_API_KEY=optional
       - SENDGRID_VERIFIED_SENDER_EMAIL=noreply@bennespro.com
-      - STRIPE_SECRET_KEY=optional
-      - STRIPE_WEBHOOK_SECRET=optional
-      - VITE_STRIPE_PUBLIC_KEY=optional
+      - PAYPLUG_SECRET_KEY=optional
+      - PAYPLUG_WEBHOOK_SECRET=optional
+      - VITE_PAYPLUG_PUBLIC_KEY=optional
       - GOOGLE_MAPS_API_KEY=optional
       - REMONDIS_SALES_EMAIL=commercial@remondis.fr
     volumes:

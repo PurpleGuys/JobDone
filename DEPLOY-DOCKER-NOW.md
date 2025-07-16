@@ -35,8 +35,8 @@ nano .env
 ```env
 SENDGRID_API_KEY=SG.votre_vraie_cle_sendgrid
 GOOGLE_MAPS_API_KEY=votre_vraie_cle_google_maps  
-STRIPE_SECRET_KEY=sk_live_ou_test_votre_cle_stripe
-VITE_STRIPE_PUBLIC_KEY=pk_live_ou_test_votre_cle_publique
+PAYPLUG_SECRET_KEY=sk_live_ou_test_votre_cle_payplug
+VITE_PAYPLUG_PUBLIC_KEY=pk_live_ou_test_votre_cle_publique
 ```
 
 ## COMMANDES UTILES

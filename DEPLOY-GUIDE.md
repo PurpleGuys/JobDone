@@ -64,7 +64,7 @@ Le script configure automatiquement :
 - Base de données PostgreSQL
 - Clés JWT sécurisées
 - Configuration Redis
-- Variables optionnelles (Stripe, SendGrid, Google Maps)
+- Variables optionnelles (PayPlug, SendGrid, Google Maps)
 
 ## ⚠️ Prérequis
 

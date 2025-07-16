@@ -212,8 +212,8 @@ services:
       - SENDGRID_API_KEY=${SENDGRID_API_KEY:-}
       - SENDGRID_VERIFIED_SENDER_EMAIL=${SENDGRID_VERIFIED_SENDER_EMAIL:-noreply@bennespro.com}
       - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY:-}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-}
-      - VITE_STRIPE_PUBLIC_KEY=${VITE_STRIPE_PUBLIC_KEY:-}
+      - PAYPLUG_SECRET_KEY=${PAYPLUG_SECRET_KEY:-}
+      - VITE_PAYPLUG_PUBLIC_KEY=${VITE_PAYPLUG_PUBLIC_KEY:-}
       - REMONDIS_SALES_EMAIL=${REMONDIS_SALES_EMAIL:-commercial@remondis.fr}
     volumes:
       - ./uploads:/app/uploads
@@ -402,9 +402,9 @@ SENDGRID_VERIFIED_SENDER_EMAIL=noreply@votre-domaine.com
 # Google Maps (OBLIGATOIRE pour le calcul de distances)
 GOOGLE_MAPS_API_KEY=votre_cle_google_maps_ici
 
-# Stripe (OBLIGATOIRE pour les paiements)
-STRIPE_SECRET_KEY=sk_test_ou_live_votre_cle_stripe
-VITE_STRIPE_PUBLIC_KEY=pk_test_ou_live_votre_cle_stripe_publique
+# PayPlug (OBLIGATOIRE pour les paiements)
+PAYPLUG_SECRET_KEY=sk_test_ou_live_votre_cle_payplug
+VITE_PAYPLUG_PUBLIC_KEY=pk_test_ou_live_votre_cle_payplug_publique
 
 # Email commercial (optionnel)
 REMONDIS_SALES_EMAIL=commercial@votre-entreprise.com
@@ -516,7 +516,7 @@ echo "   🛑 Arrêter: docker-compose down"
 echo ""
 echo "🔧 CONFIGURATION IMPORTANTE:"
 echo "   ⚠️ Éditez le fichier .env avec vos vraies clés API"
-echo "   📝 SendGrid, Google Maps, Stripe sont requis"
+echo "   📝 SendGrid, Google Maps, PayPlug sont requis"
 echo ""
 echo "🚀 VOTRE APPLICATION BENNESPRO EST PRÊTE!"
 echo "Plus d'écran blanc - Docker tout configuré automatiquement"

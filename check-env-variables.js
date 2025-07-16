@@ -30,9 +30,9 @@ const criticalVars = {
   // Google Maps
   'GOOGLE_MAPS_API_KEY': 'Clé API Google Maps (calcul distances)',
   
-  // Stripe
-  'VITE_STRIPE_PUBLIC_KEY': 'Clé publique Stripe (paiements)',
-  'STRIPE_SECRET_KEY': 'Clé secrète Stripe',
+  // PayPlug
+  'VITE_PAYPLUG_PUBLIC_KEY': 'Clé publique PayPlug (paiements)',
+  'PAYPLUG_SECRET_KEY': 'Clé secrète PayPlug',
   
   // Sécurité
   'SESSION_SECRET': 'Secret pour sessions Express',
@@ -47,7 +47,7 @@ const criticalVars = {
 const optionalVars = {
   'SENDGRID_API_KEY': 'Clé API SendGrid (emails)',
   'REDIS_URL': 'URL Redis (cache)',
-  'STRIPE_WEBHOOK_SECRET': 'Secret webhook Stripe',
+  'PAYPLUG_WEBHOOK_SECRET': 'Secret webhook PayPlug',
   'VITE_API_URL': 'URL API pour le client'
 };
 

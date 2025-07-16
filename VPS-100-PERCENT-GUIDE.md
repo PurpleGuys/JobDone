@@ -12,8 +12,8 @@
 - Fallback SVG dynamique implémenté
 - Gestion des espaces dans les noms de fichiers
 
-### 3. **Erreur AdBlocker Stripe** ⚠️
-- Stripe bloqué par les bloqueurs de publicités
+### 3. **Erreur AdBlocker PayPlug** ⚠️
+- PayPlug bloqué par les bloqueurs de publicités
 - Solution : désactiver AdBlocker pour purpleguy.world
 
 ### 4. **Erreur Connection Refused** ✅

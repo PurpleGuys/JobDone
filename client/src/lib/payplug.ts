@@ -1,95 +1,228 @@
 /**
- * PayPlug Configuration - Remplace Stripe
- * Configuration pour le système de paiement PayPlug
+ * PayPlug API Integration
+ * Official PayPlug REST API implementation
  */
 
-// Configuration PayPlug
-export const PAYPLUG_CONFIG = {
-  publicKey: import.meta.env.VITE_PAYPLUG_PUBLIC_KEY || '',
-  environment: import.meta.env.NODE_ENV === 'production' ? 'live' : 'test',
-  currency: 'EUR',
-  locale: 'fr'
-};
-
-// Types PayPlug
 export interface PayPlugPayment {
   id: string;
+  object: string;
   amount: number;
   currency: string;
-  status: 'pending' | 'completed' | 'failed';
-  metadata?: Record<string, any>;
+  created_at: string;
+  is_live: boolean;
+  is_paid: boolean;
+  payment_url: string;
+  return_url: string;
+  cancel_url: string;
+  failure: any;
+  authorization: any;
+  refunds: any[];
+  billing: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    postcode?: string;
+    country?: string;
+    language?: string;
+  };
+  shipping?: {
+    first_name: string;
+    last_name: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    postcode?: string;
+    country?: string;
+  };
+  metadata?: { [key: string]: any };
+}
+
+export interface PayPlugPaymentRequest {
+  amount: number;
+  currency: string;
+  billing: {
+    email: string;
+    first_name: string;
+    last_name: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    postcode?: string;
+    country?: string;
+    language?: string;
+  };
+  shipping?: {
+    first_name: string;
+    last_name: string;
+    address1?: string;
+    address2?: string;
+    city?: string;
+    postcode?: string;
+    country?: string;
+  };
+  hosted_payment: {
+    return_url: string;
+    cancel_url: string;
+  };
+  notification_url?: string;
+  metadata?: { [key: string]: any };
 }
 
 export interface PayPlugError {
+  error: string;
   message: string;
-  type: string;
-  code?: string;
+  details?: any;
 }
 
-// Simulation PayPlug (pour développement)
-export class PayPlugSimulation {
-  private static instance: PayPlugSimulation;
+class PayPlugAPI {
+  private readonly baseUrl = 'https://api.payplug.com/v1';
+  private readonly publicKey: string;
   
-  private constructor() {}
-  
-  static getInstance(): PayPlugSimulation {
-    if (!PayPlugSimulation.instance) {
-      PayPlugSimulation.instance = new PayPlugSimulation();
+  constructor() {
+    this.publicKey = import.meta.env.VITE_PAYPLUG_PUBLIC_KEY;
+    
+    if (!this.publicKey) {
+      console.error('PayPlug public key not configured');
+      throw new Error('PayPlug public key is required');
     }
-    return PayPlugSimulation.instance;
   }
-  
-  async createPayment(amount: number, metadata?: Record<string, any>): Promise<PayPlugPayment> {
-    // Simulation d'un délai réseau
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
+  /**
+   * Create a payment using PayPlug REST API
+   */
+  async createPayment(paymentData: PayPlugPaymentRequest): Promise<PayPlugPayment> {
+    try {
+      const response = await fetch('/api/payments/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Payment creation failed');
+      }
+
+      const payment = await response.json();
+      return payment as PayPlugPayment;
+    } catch (error) {
+      console.error('Error creating PayPlug payment:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Retrieve payment details
+   */
+  async getPayment(paymentId: string): Promise<PayPlugPayment> {
+    try {
+      const response = await fetch(`/api/payments/${paymentId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Payment retrieval failed');
+      }
+
+      const payment = await response.json();
+      return payment as PayPlugPayment;
+    } catch (error) {
+      console.error('Error retrieving PayPlug payment:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Verify payment status
+   */
+  async verifyPayment(paymentId: string): Promise<boolean> {
+    try {
+      const payment = await this.getPayment(paymentId);
+      return payment.is_paid;
+    } catch (error) {
+      console.error('Error verifying PayPlug payment:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Format amount for PayPlug (amount in cents)
+   */
+  formatAmount(amount: number): number {
+    return Math.round(amount * 100);
+  }
+
+  /**
+   * Get return URL for successful payment
+   */
+  getReturnUrl(orderId: string): string {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/payment/success?order_id=${orderId}`;
+  }
+
+  /**
+   * Get cancel URL for cancelled payment
+   */
+  getCancelUrl(orderId: string): string {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/payment/cancel?order_id=${orderId}`;
+  }
+
+  /**
+   * Get notification URL for webhooks
+   */
+  getNotificationUrl(): string {
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/api/webhooks/payplug`;
+  }
+
+  /**
+   * Validate PayPlug configuration
+   */
+  isConfigured(): boolean {
+    return !!this.publicKey;
+  }
+
+  /**
+   * Format billing address for PayPlug
+   */
+  formatBillingAddress(address: any): PayPlugPaymentRequest['billing'] {
     return {
-      id: `pay_${Date.now()}`,
-      amount,
-      currency: 'EUR',
-      status: 'pending',
-      metadata
+      email: address.email || '',
+      first_name: address.firstName || '',
+      last_name: address.lastName || '',
+      address1: address.address || '',
+      city: address.city || '',
+      postcode: address.postalCode || '',
+      country: address.country || 'FR',
+      language: address.language || 'fr',
     };
   }
-  
-  async processPayment(paymentId: string): Promise<PayPlugPayment> {
-    // Simulation du traitement du paiement
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
+  /**
+   * Format shipping address for PayPlug
+   */
+  formatShippingAddress(address: any): PayPlugPaymentRequest['shipping'] {
     return {
-      id: paymentId,
-      amount: 0,
-      currency: 'EUR',
-      status: 'completed'
-    };
-  }
-  
-  async refundPayment(paymentId: string): Promise<PayPlugPayment> {
-    // Simulation du remboursement
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    return {
-      id: paymentId,
-      amount: 0,
-      currency: 'EUR',
-      status: 'completed'
+      first_name: address.firstName || '',
+      last_name: address.lastName || '',
+      address1: address.address || '',
+      city: address.city || '',
+      postcode: address.postalCode || '',
+      country: address.country || 'FR',
     };
   }
 }
 
-// Configuration par défaut
-export const payplug = PayPlugSimulation.getInstance();
-
-// Fonction d'initialisation
-export function initPayPlug() {
-  if (!PAYPLUG_CONFIG.publicKey) {
-    console.warn('PayPlug: Clé publique non configurée. Utilisation du mode simulation.');
-    return false;
-  }
-  
-  console.log('PayPlug: Initialisé avec succès');
-  return true;
-}
-
-// Export par défaut
+// Create singleton instance
+export const payplug = new PayPlugAPI();
 export default payplug;

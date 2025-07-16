@@ -2,6 +2,7 @@ import { Express } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
 import { authenticateToken, requireAdmin } from "./auth";
+import { payplugService } from "./payplugService";
 
 export async function registerRoutes(app: Express) {
   const server = createServer(app);
@@ -73,6 +74,39 @@ export async function registerRoutes(app: Express) {
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch services" });
     }
+  });
+
+  // PayPlug payment routes
+  app.post("/api/payments/create", authenticateToken, async (req, res) => {
+    try {
+      const payment = await payplugService.createPayment(req.body);
+      res.json(payment);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create payment" });
+    }
+  });
+
+  app.get("/api/payments/:id", authenticateToken, async (req, res) => {
+    try {
+      const payment = await payplugService.getPayment(req.params.id);
+      res.json(payment);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve payment" });
+    }
+  });
+
+  app.post("/api/payments/:id/refund", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const refund = await payplugService.createRefund(req.params.id, req.body.amount, req.body.metadata);
+      res.json(refund);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create refund" });
+    }
+  });
+
+  // PayPlug webhook endpoint
+  app.post("/api/webhooks/payplug", async (req, res) => {
+    await payplugService.handleWebhook(req, res);
   });
 
   return server;

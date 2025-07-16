@@ -32,10 +32,10 @@ SENDGRID_API_KEY="SG.abcd1234567890abcdef.abcdefghijklmnopqrstuvwxyz1234567890"
 SENDGRID_VERIFIED_SENDER_EMAIL="noreply@purpleguy.world"
 GOOGLE_MAPS_API_KEY="AIzaSyAbCdEfGhIjKlMnOpQrStUvWxYz1234567"
 
-# STRIPE COMPLET
-STRIPE_SECRET_KEY="sk_test_51RTkOhQWGRGBWlNRxSkMmOTKEGSt6ivClFhscWdpIP0i1B00FXRvUiXeec6PLCFN97lojsJXXLctpsQzWmXEIhh000qYJzLLxB"
-VITE_STRIPE_PUBLIC_KEY="pk_test_51RTkOhQWGRGBWlNRLtI1Rc4q4qE4H4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B"
-STRIPE_WEBHOOK_SECRET="481f192ebfe4be9310c716a543ab50cefdf3d417130cb4941888922b9a8765e6"
+# PAYPLUG COMPLET
+PAYPLUG_SECRET_KEY="sk_test_51RTkOhQWGRGBWlNRxSkMmOTKEGSt6ivClFhscWdpIP0i1B00FXRvUiXeec6PLCFN97lojsJXXLctpsQzWmXEIhh000qYJzLLxB"
+VITE_PAYPLUG_PUBLIC_KEY="pk_test_51RTkOhQWGRGBWlNRLtI1Rc4q4qE4H4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B"
+PAYPLUG_WEBHOOK_SECRET="481f192ebfe4be9310c716a543ab50cefdf3d417130cb4941888922b9a8765e6"
 
 # CONFIGURATION MÉTIER
 REMONDIS_SALES_EMAIL="commercial@purpleguy.world"
@@ -84,7 +84,7 @@ COPY .env.production ./.env
 
 # Variables d'environnement pour le build
 ENV NODE_ENV=production
-ENV VITE_STRIPE_PUBLIC_KEY="pk_test_51RTkOhQWGRGBWlNRLtI1Rc4q4qE4H4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B"
+ENV VITE_PAYPLUG_PUBLIC_KEY="pk_test_51RTkOhQWGRGBWlNRLtI1Rc4q4qE4H4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B4B"
 
 # Build de l'application
 RUN npm run build
@@ -140,7 +140,7 @@ echo ""
 echo "🎉 CORRECTION COMPLÈTE TERMINÉE !"
 echo "==============================="
 echo "✅ Toutes les clés API configurées"
-echo "✅ Variables d'environnement Stripe ajoutées"
+echo "✅ Variables d'environnement PayPlug ajoutées"
 echo "✅ Configuration de production optimisée"
 echo "✅ Déploiement SSL automatique lancé"
 echo ""
@@ -149,6 +149,6 @@ echo "   https://purpleguy.world (avec SSL)"
 echo "   http://purpleguy.world (redirection HTTPS)"
 echo ""
 echo "📝 Les problèmes JavaScript résolus:"
-echo "   ✅ VITE_STRIPE_PUBLIC_KEY configuré"
+echo "   ✅ VITE_PAYPLUG_PUBLIC_KEY configuré"
 echo "   ✅ Source maps désactivées en production"
 echo "   ✅ Toutes les clés API présentes"

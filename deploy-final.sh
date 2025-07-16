@@ -292,9 +292,9 @@ services:
       - JWT_SECRET=ultraSecureJWTSecret2024BennesPro!
       - SENDGRID_API_KEY=optional
       - SENDGRID_VERIFIED_SENDER_EMAIL=noreply@bennespro.com
-      - STRIPE_SECRET_KEY=optional
-      - STRIPE_WEBHOOK_SECRET=optional
-      - VITE_STRIPE_PUBLIC_KEY=optional
+      - PAYPLUG_SECRET_KEY=optional
+      - PAYPLUG_WEBHOOK_SECRET=optional
+      - VITE_PAYPLUG_PUBLIC_KEY=optional
       - GOOGLE_MAPS_API_KEY=optional
       - REMONDIS_SALES_EMAIL=commercial@remondis.fr
     ports:
@@ -375,9 +375,9 @@ services:
       - JWT_SECRET=ultraSecureJWTSecret2024BennesPro!
       - SENDGRID_API_KEY=optional
       - SENDGRID_VERIFIED_SENDER_EMAIL=noreply@bennespro.com
-      - STRIPE_SECRET_KEY=optional
-      - STRIPE_WEBHOOK_SECRET=optional
-      - VITE_STRIPE_PUBLIC_KEY=optional
+      - PAYPLUG_SECRET_KEY=optional
+      - PAYPLUG_WEBHOOK_SECRET=optional
+      - VITE_PAYPLUG_PUBLIC_KEY=optional
       - GOOGLE_MAPS_API_KEY=optional
       - REMONDIS_SALES_EMAIL=commercial@remondis.fr
     volumes:
@@ -679,8 +679,8 @@ services:
       DATABASE_URL: "postgresql://bennespro:securepwd@postgres:5432/bennespro"
       REDIS_URL: "redis://redis:6379"
       PORT: 5000
-      VITE_STRIPE_PUBLIC_KEY: ""
-      STRIPE_SECRET_KEY: ""
+      VITE_PAYPLUG_PUBLIC_KEY: ""
+      PAYPLUG_SECRET_KEY: ""
       SENDGRID_API_KEY: ""
       SENDGRID_VERIFIED_SENDER_EMAIL: "noreply@bennespro.demo"
       SESSION_SECRET: "docker-secret-bennespro-2025"

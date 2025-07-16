@@ -32,11 +32,11 @@ echo -e "\n${BLUE}► Vérification du fichier .env${NC}"
 if [ -f .env ]; then
     echo -e "${GREEN}✓ Fichier .env trouvé${NC}"
     
-    # Vérifier les clés Stripe
-    echo -e "\n${BLUE}► Vérification des clés Stripe :${NC}"
+    # Vérifier les clés PayPlug
+    echo -e "\n${BLUE}► Vérification des clés PayPlug :${NC}"
     if grep -q "pk_live" .env && grep -q "sk_live" .env; then
-        echo -e "${GREEN}✓ Clés de production Stripe trouvées${NC}"
-        grep "STRIPE" .env | grep -v "^#" | head -5
+        echo -e "${GREEN}✓ Clés de production PayPlug trouvées${NC}"
+        grep "PAYPLUG" .env | grep -v "^#" | head -5
     else
         echo -e "${YELLOW}⚠️  Clés de test détectées, mise à jour nécessaire${NC}"
     fi

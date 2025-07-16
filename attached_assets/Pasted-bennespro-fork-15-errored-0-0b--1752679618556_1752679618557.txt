@@ -1,0 +1,46 @@
+bennespro          │ fork     │ 15   │ errored   │ 0%       │ 0b       │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+
+🌐 Port 5000:
+./URGENT-PM2-FIX.sh: line 58: netstat: command not found
+❌ Pas de port 5000
+./URGENT-PM2-FIX.sh: line 61: netstat: command not found
+
+❌ ÉCHEC - Logs PM2:
+[TAILING] Tailing last 10 lines for [all] processes (change the value with --lines option)
+/root/.pm2/pm2.log last 10 lines:
+PM2        | 2025-07-16T15:26:41: PM2 log: App [bennespro:1] starting in -fork mode-
+PM2        | 2025-07-16T15:26:41: PM2 log: App [bennespro:1] online
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] exited with code [1] via signal [SIGINT]
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] starting in -fork mode-
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] online
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] exited with code [1] via signal [SIGINT]
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] starting in -fork mode-
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] online
+PM2        | 2025-07-16T15:26:42: PM2 log: App [bennespro:1] exited with code [1] via signal [SIGINT]
+PM2        | 2025-07-16T15:26:42: PM2 log: Script /usr/bin/bash had too many unstable restarts (16). Stopped. "errored"
+
+/root/.pm2/logs/bennespro-out.log last 10 lines:
+0|bennespr | 1:24:19 PM [INFO] [DATABASE]    - users (BASE TABLE)
+0|bennespr | 1:24:19 PM [INFO] [DATABASE]    - waste_types (BASE TABLE)
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] 🔒 Security headers configured with Helmet
+0|bennespr | 3:26:32 PM [INFO] [STARTUP] Setting up API routes...
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] ═══════════════════════════════════════════════
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] 🚀 BennesPro Server Successfully Started!
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] 📡 Server running on: http://localhost:5000
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] 🌍 Environment: production
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] 🚀 Production mode: Serving static files
+0|bennespr | 3:26:32 PM [SUCCESS] [STARTUP] ═══════════════════════════════════════════════
+
+/root/.pm2/logs/bennespro-error.log last 10 lines:
+0|bennespr |
+0|bennespr | ReferenceError: require is not defined in ES module scope, you can use import instead
+0|bennespr | This file is being treated as an ES module because it has a '.js' file extension and '/home/ubuntu/JobDone/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
+0|bennespr |     at file:///home/ubuntu/JobDone/server/index.js:1:17
+0|bennespr |     at ModuleJob.run (node:internal/modules/esm/module_job:195:25)
+0|bennespr |     at async ModuleLoader.import (node:internal/modules/esm/loader:337:24)
+0|bennespr |     at async loadESM (node:internal/process/esm_loader:34:7)
+0|bennespr |     at async handleMainPromise (node:internal/modules/run_main:106:12)
+0|bennespr |
+0|bennespr | Node.js v18.20.6
+

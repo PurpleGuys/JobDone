@@ -1,0 +1,24 @@
+Échec du chargement pour l’élément <script> dont la source est « https://replit.com/public/js/replit-dev-banner.js ». booking:16:92
+Content-Security-Policy : Les paramètres de la page ont empêché l’exécution d’un script (script-src-elem) à l’adresse https://replit.com/public/js/replit-dev-banner.js car il enfreint la directive suivante : « script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com https://maps.gstatic.com » booking
+Échec du chargement pour l’élément <script> dont la source est « https://js.stripe.com/basil/stripe.js ». booking:1:1
+Uncaught Error: Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY
+    <anonymous> https://purpleguy.world/assets/index-CUaOr6u0.js:498
+index-CUaOr6u0.js:498:9899
+Content-Security-Policy : Les paramètres de la page ont empêché l’exécution d’un script (script-src-elem) à l’adresse https://js.stripe.com/basil/stripe.js car il enfreint la directive suivante : « script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.payplug.com https://secure.payplug.com https://api.payplug.com https://maps.googleapis.com https://maps.gstatic.com » index-CUaOr6u0.js:498:8249
+Error: Failed to load Stripe.js
+    ZB https://purpleguy.world/assets/index-CUaOr6u0.js:498
+    uc https://purpleguy.world/assets/index-CUaOr6u0.js:498
+    JB https://purpleguy.world/assets/index-CUaOr6u0.js:498
+    h4 https://purpleguy.world/assets/index-CUaOr6u0.js:498
+    <anonymous> https://purpleguy.world/assets/index-CUaOr6u0.js:498
+    promise callback* https://purpleguy.world/assets/index-CUaOr6u0.js:498
+Caused by: error { isTrusted: true, eventPhase: 2, bubbles: false, cancelable: false, returnValue: true, defaultPrevented: false, composed: false, timeStamp: 613, cancelBubble: false, NONE: 0 }
+<anonymous code>:1:145535
+Erreur dans les liens source : Error: JSON.parse: unexpected character at line 1 column 1 of the JSON data
+Stack in the worker:parseSourceMapInput@resource://devtools/client/shared/vendor/source-map/lib/util.js:163:15
+_factory@resource://devtools/client/shared/vendor/source-map/lib/source-map-consumer.js:1066:22
+SourceMapConsumer@resource://devtools/client/shared/vendor/source-map/lib/source-map-consumer.js:26:12
+_fetch@resource://devtools/client/shared/source-map-loader/utils/fetchSourceMap.js:83:19
+
+URL de la ressource : https://purpleguy.world/%3Canonymous%20code%3E
+URL du lien source : installHook.js.map

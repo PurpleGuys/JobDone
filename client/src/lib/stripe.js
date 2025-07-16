@@ -1,18 +1,19 @@
-// FICHIER STRIPE.JS VIDE - REMPLACÉ PAR PAYPLUG
-console.warn('Stripe désactivé - PayPlug utilisé à la place');
+// STRIPE DÉSACTIVÉ - PAYPLUG ONLY
+console.warn('Stripe désactivé - PayPlug utilisé');
 
-// Export vide pour éviter les erreurs d'import
+// Exports vides pour éviter les erreurs
 export const stripe = null;
-export const loadPayPlug = () => Promise.resolve(null);
+export const loadStripe = () => null;
 export const Stripe = null;
 export const Elements = null;
 export const CardElement = null;
 export const useStripe = () => null;
 export const useElements = () => null;
 
-// Intercepter toutes les tentatives d'utilisation de Stripe
-window.stripe = null;
-window.Stripe = null;
+// Bloquer window.stripe
+if (typeof window !== 'undefined') {
+    window.stripe = null;
+    window.Stripe = null;
+}
 
-// Export par défaut
 export default null;

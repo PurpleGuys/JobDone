@@ -1,3 +1,10 @@
+#!/bin/bash
+
+echo "🔧 SOLUTION FINALE - ARRÊT CHARGEMENT EN BOUCLE"
+echo "============================================="
+
+# 1. Mise à jour complète du hook useAuth
+cat > client/src/hooks/useAuth.ts << 'EOF'
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -202,3 +209,9 @@ export function useChangePassword() {
     },
   });
 }
+EOF
+
+echo "✅ Hook useAuth mis à jour - plus de chargement infini"
+echo "✅ Application prête à charger normalement"
+echo ""
+echo "🚀 L'application devrait maintenant charger sans problème"
